@@ -90,6 +90,18 @@ func (s *PluginService) CreateOAuth(params *Plugin, apiName string) (*Plugin, *h
 	return plugin, resp, err
 }
 
+func (s *PluginService) CreateJWT(params *Plugin, apiName string) (*Plugin, *http.Response, error) {
+	plugin := new(Plugin)
+	resp, err := s.sling.New().Post(s.config.KongAdminURL + "apis/" + apiName + "/plugins").BodyJSON(params).ReceiveSuccess(plugin)
+	return plugin, resp, err
+}
+
+func (s *PluginService) CreateCorrelationID(params *Plugin, apiName string) (*Plugin, *http.Response, error) {
+	plugin := new(Plugin)
+	resp, err := s.sling.New().Post(s.config.KongAdminURL + "apis/" + apiName + "/plugins").BodyJSON(params).ReceiveSuccess(plugin)
+	return plugin, resp, err
+}
+
 func (s *PluginService) Create(params *GeneratePluginParams, apiName string) (*Plugin, *http.Response, error) {
 	plugin := new(Plugin)
 	resp, err := s.sling.New().Post(s.config.KongAdminURL + "apis/" + apiName + "/plugins").BodyJSON(params).ReceiveSuccess(plugin)
