@@ -13,7 +13,7 @@ SOURCES := $(shell find $(SOURCEDIR) -name '*.go' -type f)
 LDFLAGS := -ldflags="-w -X \"main.Version=$(VERSION)\" -X \"main.Revision=$(REVISION)\" -X \"main.BuildTime=$(BUILDTIME)\" -X \"main.GoVersion=$(GOVERSION)\""
 
 GLIDE := glide
-GLIDE_VERSION := 0.10.2
+GLIDE_VERSION := 0.12.3
 
 DOCKER_IMAGE_NAME := orangesys/orangeapi
 DOCKER_IMAGE_TAG := $(VERSION)
