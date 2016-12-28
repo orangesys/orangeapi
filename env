@@ -1,3 +1,0 @@
-export KONG_HOST="localhost"
-export KONG_PORT="8001"
-export KONG_URL="http://127.0.0.1:8001/"
