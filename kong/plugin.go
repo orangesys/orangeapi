@@ -23,7 +23,8 @@ type Plugin struct {
 }
 
 type EnabledPlugin struct {
-	EnabledPlugins map[string]bool `json:"enabled_plugins"`
+//	EnabledPlugins map[string]bool `json:"enabled_plugins"`
+	EnabledPlugins []string `json:"enabled_plugins"`
 }
 
 type PluginSchema struct {

@@ -10,7 +10,7 @@ import (
 type KongConfiguration struct {
 	KongAdminHost string `envconfig:"host" default:"localhost"`
 	KongAdminPort string `envconfig:"port" default:"8001"`
-	KongAdminURL  string `envconfig:"url" default:""`
+	KongAdminURL  string `envconfig:"url" default:"http://127.0.0.1:8001/"`
 }
 
 const (

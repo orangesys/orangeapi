@@ -11,6 +11,7 @@ type Client struct {
 	APIService	       *APIService
 	ConsumerService        *ConsumerService
 	PluginService          *PluginService
+	JWTService             *JWTService
 }
 
 // NewClient returns a new Client
@@ -19,5 +20,6 @@ func NewClient(httpClient *http.Client, config *config.KongConfiguration) *Clien
 		APIService:		NewAPIService(httpClient, config),
 		ConsumerService:        NewConsumerService(httpClient, config),
 		PluginService:          NewPluginService(httpClient, config),
+		JWTService:             NewJWTService(httpClient, config),
 	}
 }
