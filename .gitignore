@@ -22,4 +22,11 @@ _testmain.go
 *.exe
 *.test
 *.prof
-env
+
+bin/*
+!bin/.keep
+
+vendor/
+
+# Config
+.env
