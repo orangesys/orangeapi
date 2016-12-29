@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/dghubble/sling"
-	"github.com/wantedly/kong-frontend/config"
+	"github.com/orangesys/orangeapi/config"
 )
 
 type BasicAuthCredentials struct {

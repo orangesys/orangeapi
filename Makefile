@@ -23,14 +23,14 @@ DOCKER_IMAGE := $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 
 $(BINARYDIR)/$(GLIDE):
 ifeq ($(shell uname),Darwin)
-	curl -fL https://github.com/Masterminds/glide/releases/download/$(GLIDE_VERSION)/glide-$(GLIDE_VERSION)-darwin-amd64.zip -o glide.zip
+	curl -fL https://github.com/Masterminds/glide/releases/download/v$(GLIDE_VERSION)/glide-v$(GLIDE_VERSION)-darwin-amd64.zip -o glide.zip
 	unzip glide.zip
 	if [ ! -d $(BINARYDIR) ]; then mkdir $(BINARYDIR); fi
 	mv ./darwin-amd64/glide $(BINARYDIR)/$(GLIDE)
 	rm -fr ./darwin-amd64
 	rm ./glide.zip
 else
-	curl -fL https://github.com/Masterminds/glide/releases/download/$(GLIDE_VERSION)/glide-$(GLIDE_VERSION)-linux-amd64.zip -o glide.zip
+	curl -fL https://github.com/Masterminds/glide/releases/download/v$(GLIDE_VERSION)/glide-v$(GLIDE_VERSION)-linux-amd64.zip -o glide.zip
 	unzip glide.zip
 	if [ ! -d $(BINARYDIR) ]; then mkdir $(BINARYDIR); fi
 	mv ./linux-amd64/glide $(BINARYDIR)/$(GLIDE)

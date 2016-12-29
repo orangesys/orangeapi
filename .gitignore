@@ -25,6 +25,7 @@ _testmain.go
 
 bin/*
 !bin/.keep
+glide.lock
 
 vendor/
 

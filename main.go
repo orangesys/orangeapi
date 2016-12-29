@@ -72,7 +72,7 @@ func plugincorrelationid(config *config.KongConfiguration) {
 }
 
 func main() {
-	config, err := config.LoadConfig()
+	config, err := config.LoadKongConfig()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%+v\n", err)
 		os.Exit(1)

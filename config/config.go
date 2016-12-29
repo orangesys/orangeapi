@@ -13,11 +13,16 @@ type KongConfiguration struct {
 	KongAdminURL  string `envconfig:"url" default:"http://127.0.0.1:8001/"`
 }
 
+type FirebaseConfiguration struct {
+	FirebaseURL  string `envconfig:"firebase_url" default:"https://saas-orangesys-io.firebaseio.com/"`
+	FirebaseAuth string `envconfig:"firebase_auth" default:""`
+}
+
 const (
-	ConfigPrefix = "kong"
+	ConfigPrefix = "orangeapi"
 )
 
-func LoadConfig() (*KongConfiguration, error) {
+func LoadKongConfig() (*KongConfiguration, error) {
 	var config KongConfiguration
 	err := envconfig.Process(ConfigPrefix, &config)
 	if err != nil {
@@ -25,6 +30,15 @@ func LoadConfig() (*KongConfiguration, error) {
 	}
 	if config.KongAdminURL == "" {
 		config.KongAdminURL = "http://" + config.KongAdminHost + ":" + config.KongAdminPort + "/"
+	}
+	return &config, nil
+}
+
+func LoadFirebaseConfig() (*FirebaseConfiguration, error) {
+	var config FirebaseConfiguration
+	err := envconfig.Process(ConfigPrefix, &config)
+	if err != nil {
+		return nil, errors.Wrap(err, "Failed to load config from envs.")
 	}
 	return &config, nil
 }
