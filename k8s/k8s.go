@@ -7,8 +7,6 @@ import (
 )
 
 func GetSecret (namespace, key, data string) (string, error){
-  s := &Secret{}
-
   s, err := getSecret(namespace, key)
   if err != nil {
     return "", errors.New("missing key" + key)
