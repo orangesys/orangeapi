@@ -37,7 +37,7 @@ func pluginjwt(config *config.KongConfiguration) {
 	generatePlugin := &kong.Plugin{
 	    Name: "jwt",
 	}
-	plugin, resp, _ := client.PluginService.CreateJWT(generatePlugin, apiName)
+	plugin, resp, _ := client.PluginService.Create(generatePlugin, apiName)
 	fmt.Printf("plugin is %+v \n\n resp is %+v \n\n\n ", plugin, resp)
 }
 
@@ -67,8 +67,24 @@ func plugincorrelationid(config *config.KongConfiguration) {
 			Generator: "tracker",
 	    },
 	}
-	plugin, resp, err := client.PluginService.CreateCorrelationID(generatePlugin, apiName)
+	plugin, resp, err := client.PluginService.Create(generatePlugin, apiName)
 	fmt.Printf("Create C-ID plugin :\n%v\n%v\n%v\n%v\n", generatePlugin, plugin, resp, err)
+}
+
+func pluginrequesttransformer(config *config.KongConfiguration) {
+	client := kong.NewClient(nil, config)
+	apiName := "test02"
+	writepassword := "passwordwrite"
+	querystring := "u:_write,p:" + writepassword
+	generatePlugin := &kong.Plugin{
+	    Name: "request-transformer",
+	    Config: kong.RequestTransformerPluginConfig{
+			RemoveQueryString: "jwt",
+			AddQueryString: querystring,
+            },
+        }
+	plugin, resp, err := client.PluginService.Create(generatePlugin, apiName)
+	fmt.Printf("Create Request-Transformer plugin :\n%v\n%v\n%v\n%v\n", generatePlugin, plugin, resp, err)
 }
 
 func main() {
@@ -100,9 +116,10 @@ func main() {
 //	plugin, resp, err := client.PluginService.CreateOAuth(generatePlugin, "mockbin")
 //	fmt.Printf("Create Plugin :\n%v\n%v\n%v\n%v\n", generatePlugin, plugin, resp, err)
 
-//	consumer(config)
-//	api(config)
-//	pluginjwt(config)
-//	plugincorrelationid(config)
+	consumer(config)
+	api(config)
+	pluginjwt(config)
+	plugincorrelationid(config)
 	configjwt(config)
+	pluginrequesttransformer(config)
 }
