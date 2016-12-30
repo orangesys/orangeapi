@@ -5,11 +5,13 @@ import (
 	"os"
 
 	"github.com/orangesys/orangeapi/kong"
+	"github.com/orangesys/orangeapi/helm"
+	"github.com/orangesys/orangeapi/k8s"
 	"github.com/orangesys/orangeapi/config"
 )
 
 
-func api(config *config.KongConfiguration) {
+func create_kong_api(config *config.KongConfiguration) {
 	client := kong.NewClient(nil, config)
         apis, _, _ := client.APIService.List()
         fmt.Printf("apis is %+v \n", apis)
@@ -22,7 +24,7 @@ func api(config *config.KongConfiguration) {
 	fmt.Printf("api resp is %+v \n\n", resp)
 }
 
-func consumer(config *config.KongConfiguration) {
+func create_kong_consumer(config *config.KongConfiguration) {
 	client := kong.NewClient(nil, config)
 	body := &kong.Consumer{
 	    Username: "test02",
@@ -31,7 +33,7 @@ func consumer(config *config.KongConfiguration) {
 	fmt.Printf("consumer resp is %+v \n\n", resp)
 }
 
-func pluginjwt(config *config.KongConfiguration) {
+func create_kong_plugin_jwt(config *config.KongConfiguration) {
 	client := kong.NewClient(nil, config)
 	apiName := "test02"
 	generatePlugin := &kong.Plugin{
@@ -41,7 +43,7 @@ func pluginjwt(config *config.KongConfiguration) {
 	fmt.Printf("plugin is %+v \n\n resp is %+v \n\n\n ", plugin, resp)
 }
 
-func configjwt(config *config.KongConfiguration) {
+func config_kong_plugin_jwt(config *config.KongConfiguration) {
 	client := kong.NewClient(nil, config)
 	consumerName := "test02"
 	_k, _ := kong.UUID()
@@ -53,11 +55,8 @@ func configjwt(config *config.KongConfiguration) {
 	credential, resp, err := client.JWTService.Create(consumerName, generateConfig)
 	fmt.Printf("Create JWT credential :\n%v\n%v\n%v\n%v\n", generateConfig, credential, resp, err)
 }
-//            "key": "a36c3049b36249a3c9f8891cb127243c",
-//            "secret": "e71829c351aa4242c2719cbfbe671c09"
 
-
-func plugincorrelationid(config *config.KongConfiguration) {
+func config_kong_plugin_correlationid(config *config.KongConfiguration) {
 	client := kong.NewClient(nil, config)
 	apiName := "test02"
 	generatePlugin := &kong.Plugin{
@@ -71,7 +70,7 @@ func plugincorrelationid(config *config.KongConfiguration) {
 	fmt.Printf("Create C-ID plugin :\n%v\n%v\n%v\n%v\n", generatePlugin, plugin, resp, err)
 }
 
-func pluginrequesttransformer(config *config.KongConfiguration) {
+func config_kong_plugin_request_transformer(config *config.KongConfiguration) {
 	client := kong.NewClient(nil, config)
 	apiName := "test02"
 	writepassword := "passwordwrite"
@@ -93,6 +92,13 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%+v\n", err)
 		os.Exit(1)
 	}
+	create_kong_api(config)
+	create_kong_consumer(config)
+	create_kong_plugin_jwt(config)
+	config_kong_plugin_jwt(config)
+	config_kong_plugin_correlationid(config)
+	config_kong_plugin_request_transformer(config)
+
 //	client := kong.NewClient(nil, config)
 //
 //	api, _, _ := client.APIService.Get("mockbin")
@@ -116,10 +122,5 @@ func main() {
 //	plugin, resp, err := client.PluginService.CreateOAuth(generatePlugin, "mockbin")
 //	fmt.Printf("Create Plugin :\n%v\n%v\n%v\n%v\n", generatePlugin, plugin, resp, err)
 
-	consumer(config)
-	api(config)
-	pluginjwt(config)
-	plugincorrelationid(config)
-	configjwt(config)
-	pluginrequesttransformer(config)
+
 }

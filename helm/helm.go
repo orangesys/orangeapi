@@ -1,8 +1,8 @@
 package helm
 
 import (
-	"fmt"
-	"os"
+	_ "fmt"
+	_ "os"
 	"os/exec"
 )
 
