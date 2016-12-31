@@ -2,13 +2,17 @@ package controller
 
 import (
 	"fmt"
+	"errors"
 	_ "os"
 
 	"github.com/orangesys/orangeapi/common"
 	"github.com/orangesys/orangeapi/kong"
+	"github.com/orangesys/orangeapi/helm"
+	"github.com/orangesys/orangeapi/k8s"
 	"github.com/orangesys/orangeapi/firebase"
 	"github.com/orangesys/orangeapi/config"
 )
+var ErrNotExist = errors.New("object does not exist")
 
 func create_kong_api_plugin(config *config.KongConfiguration, name, writepassword string) error {
 	client := kong.NewClient(nil, config)
@@ -112,46 +116,78 @@ func create_kong_consumer_with_jwt(config *config.KongConfiguration, name string
 	return _k, _s, nil
 }
 
-func CreateConsumer(name, wp, uuid string) error {
+func deploy_influxdb_grafana(name, retention, pvcsize string) (string, error) {
+		namespace := "default"
+		data := "write-password"
+		key := name + "-i-influxdb"
+
+	  influxdb := helm.InfluxdbCommander{
+		    Name: name,
+		    Retention: retention,
+		    Pvcsize: pvcsize,
+	  }
+		if err := influxdb.InstallInfluxdb(); err != nil {
+		    return "", fmt.Errorf("%s %s", "can not deploy influxdb with", name)
+		}
+
+		grafana := helm.GrafanaCommander{
+				Name: name,
+		}
+		if err := grafana.InstallGrafana(); err != nil {
+		    return "", fmt.Errorf("%s %s", "can not deploy grafana with", name)
+		}
+		writepassword, err := k8s.GetSecret(namespace,key, data)
+		if err != nil {
+			return "", err
+		}
+		return writepassword, nil
+}
+
+func CreateConsumer(name, retention, pvcsize, uuid string) error {
 //	name := "rlxebz"
 //	wp := "mypassword"
 //	uuid := "iGzNX6QzfudVlwKtR8CQCj0itIU2"
 
-	kongconfig, err := config.LoadKongConfig()
+	wp, err := deploy_influxdb_grafana(name, retention, pvcsize)
 	if err != nil {
-		return  err
-	}
-
-	if err = create_kong_api_plugin(kongconfig, name, wp); err != nil {
 		return err
 	}
 
-	key, secret, cerr := create_kong_consumer_with_jwt(kongconfig, name)
-	if cerr != nil {
-		return cerr
+	kongconfig, kerr := config.LoadKongConfig()
+	if err != nil {
+		return  kerr
+	}
+
+	if err := create_kong_api_plugin(kongconfig, name, wp); err != nil {
+		return err
+	}
+
+	key, secret, err := create_kong_consumer_with_jwt(kongconfig, name)
+	if err != nil {
+		return err
 	}
 	consumer := common.Consumer{
 		Iss: key,
 		Secret: secret,
 	}
-	consumer_jwt_token, jerr := consumer.CreateToken()
-	if jerr != nil {
-		return jerr
+	consumer_jwt_token, err := consumer.CreateToken()
+	if err != nil {
+		return err
 	}
 
-        firebaseconfig, err := config.LoadFirebaseConfig()
+  firebaseconfig, err := config.LoadFirebaseConfig()
 
-        if err != nil {
-            return err
-        }
-        user := firebase.FirebaseConfiguration{
-	    Config: firebaseconfig,
-	    UUID: uuid,
-	    ConsumerID: name,
-	    Token: consumer_jwt_token,
-        }
-        if err = user.SaveToken(); err !=nil {
-            return err
-        }
+  if err != nil {
+      return err
+  }
+  user := firebase.FirebaseConfiguration{
+			Config: firebaseconfig,
+			UUID: uuid,
+			ConsumerID: name,
+			Token: consumer_jwt_token,
+  }
+  if err := user.SaveToken(); err != nil {
+      return err
+  }
 	return nil
 }
