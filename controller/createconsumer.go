@@ -18,7 +18,7 @@ func create_kong_api_plugin(config *config.KongConfiguration, name, writepasswor
 	client := kong.NewClient(nil, config)
 	influxdbAPI := &kong.API{
 	    Name: name + "-influxdb",
-	    UpstreamURL: "http://" + name + "-influxdb.default",
+	    UpstreamURL: "http://" + name + "-i-influxdb.default",
 	    RequestHost: name + ".i.orangesys.io",
 	}
 	_, iresp, err := client.APIService.Create(influxdbAPI)
@@ -31,7 +31,7 @@ func create_kong_api_plugin(config *config.KongConfiguration, name, writepasswor
 
 	grafanaAPI := &kong.API{
 	    Name: name + "-grafana",
-	    UpstreamURL: "http://" + name + "-grafana.default",
+	    UpstreamURL: "http://" + name + "-g-grafana.default",
 	    RequestHost: name + ".g.orangesys.io",
 	}
 	_, gresp, err := client.APIService.Create(grafanaAPI)
