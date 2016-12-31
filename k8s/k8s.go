@@ -2,14 +2,13 @@ package k8s
 
 import (
   _ "fmt"
-  "errors"
   "encoding/base64"
 )
 
 func GetSecret (namespace, key, data string) (string, error){
   s, err := getSecret(namespace, key)
   if err != nil {
-    return "", errors.New("missing key" + key)
+    return "", err
   }
   v := s.Data[data]
   d, err := base64.StdEncoding.DecodeString(v)
