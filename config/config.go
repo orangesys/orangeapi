@@ -8,9 +8,9 @@ import (
 )
 
 type KongConfiguration struct {
-	KongAdminHost string `envconfig:"host" default:"localhost"`
-	KongAdminPort string `envconfig:"port" default:"8001"`
-	KongAdminURL  string `envconfig:"url" default:"http://127.0.0.1:8001/"`
+	KongAdminHost string `envconfig:"kong_host" default:"localhost"`
+	KongAdminPort string `envconfig:"kong_port" default:"8001"`
+	KongAdminURL  string `envconfig:"kong_url" default:"http://127.0.0.1:8001/"`
 }
 
 type FirebaseConfiguration struct {
