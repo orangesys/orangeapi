@@ -1,4 +1,4 @@
-package kong
+package common
 
 import (
     "fmt"

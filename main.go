@@ -5,9 +5,11 @@ import (
 	"os"
 //        "reflect"
 
+	"github.com/orangesys/orangeapi/common"
 	_ "github.com/orangesys/orangeapi/helm"
 	_ "github.com/orangesys/orangeapi/k8s"
 	"github.com/orangesys/orangeapi/kong"
+	"github.com/orangesys/orangeapi/firebase"
 	"github.com/orangesys/orangeapi/config"
 )
 
@@ -97,8 +99,8 @@ func create_kong_consumer_with_jwt(config *config.KongConfiguration, name string
 		return "", "", err
 	}
 
-	_k, _ := kong.UUID()
-	_s, _ := kong.UUID()
+	_k, _ := common.UUID()
+	_s, _ := common.UUID()
 	generateConfig := &kong.JWTCredential{
 		Key: _k,
 		Secret: _s,
@@ -114,25 +116,58 @@ func create_kong_consumer_with_jwt(config *config.KongConfiguration, name string
 }
 
 func main() {
-	config, err := config.LoadKongConfig()
+	name := "rlxebz"
+	wp := "mypassword"
+
+	kongconfig, err := config.LoadKongConfig()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%+v\n", err)
 		os.Exit(1)
 	}
-	name := "rlxebz"
-	wp := "mypassword"
 
-	err = create_kong_api_plugin(config, name, wp)
+	err = create_kong_api_plugin(kongconfig, name, wp)
         if err != nil {
 		fmt.Println(err)
 	//	fmt.Errorf("can not create api with kong", err)
 		os.Exit(1)
 	}
-	key, secret, cerr := create_kong_consumer_with_jwt(config, name)
+	key, secret, cerr := create_kong_consumer_with_jwt(kongconfig, name)
 	if cerr != nil {
 		fmt.Println(err)
 	//	fmt.Errorf("can not create api with kong", err)
 		os.Exit(1)
 	}
-	fmt.Printf("key is %s, secret is %s\n", key, secret)
+	consumer := common.Consumer{
+		Iss: key,
+		Secret: secret,
+	}
+	consumer_jwt_token, jerr := consumer.CreateToken()
+	if jerr != nil {
+		fmt.Println(jerr)
+	}
+//	fmt.Printf("consumer_jwt_token is %s", consumer_jwt_token)
+
+	uuid := "iGzNX6QzfudVlwKtR8CQCj0itIU2"
+        firebaseconfig, err := config.LoadFirebaseConfig()
+
+        if err != nil {
+            fmt.Println(err)
+	    os.Exit(1)
+        }
+        user := firebase.FirebaseConfiguration{
+	    Config: firebaseconfig,
+	    UUID: uuid,
+	    ConsumerID: name,
+	    Token: consumer_jwt_token,
+        }
+        err = user.CheckUser()
+        if err !=nil {
+            fmt.Println(err)
+	os.Exit(1)
+        }
+        err = user.SaveToken()
+        if err !=nil {
+            fmt.Println(err)
+	os.Exit(2)
+        }
 }

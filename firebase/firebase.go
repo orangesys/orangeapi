@@ -2,7 +2,7 @@ package firebase
 
 import (
     "fmt"
-    "os"
+    _ "os"
 
     "github.com/JustinTulloss/firebase"
     "github.com/orangesys/orangeapi/config"
