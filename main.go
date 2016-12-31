@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-		if firebaseconfig, err := config.LoadFirebaseConfig()
+		firebaseconfig, err := config.LoadFirebaseConfig()
 		if err != nil {
 				fmt.Println(err)
 		}
