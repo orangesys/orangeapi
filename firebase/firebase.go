@@ -1,4 +1,4 @@
-package main
+package firebase
 
 import (
     "fmt"
@@ -8,22 +8,29 @@ import (
     "github.com/orangesys/orangeapi/config"
 )
 
-func CheckUser(uuid string, config *config.FirebaseConfiguration) error {
-    c := firebase.NewClient(config.FirebaseURL + "/users/" + uuid, config.FirebaseAuth, nil)
+type FirebaseConfiguration struct {
+	Config		*config.FirebaseConfiguration
+	UUID		string
+	ConsumerID	string
+	Token		string
+}
+
+func (f *FirebaseConfiguration) CheckUser() error {
+    c := firebase.NewClient(f.Config.FirebaseURL + "/users/" + f.UUID, f.Config.FirebaseAuth, nil)
     var r map[string]interface{}
     err := c.Value(&r)
     if err != nil {
         return err
     }
     if r == nil {
-        return fmt.Errorf("%s %s", "can not get consumer", uuid)
+        return fmt.Errorf("%s %s", "can not get consumer", f.UUID)
     }
     return nil
 }
 
-func SaveToken(uuid, consumerId, token string, config *config.FirebaseConfiguration) error {
-    c := firebase.NewClient(config.FirebaseURL + "/users/" + uuid, config.FirebaseAuth, nil)
-    tf := map[string]interface{}{ "consumerID": consumerId, "token": token }
+func (f *FirebaseConfiguration) SaveToken() error {
+    c := firebase.NewClient(f.Config.FirebaseURL + "/users/" + f.UUID, f.Config.FirebaseAuth, nil)
+    tf := map[string]interface{}{ "consumerID": f.ConsumerID, "token": f.Token }
     _, err := c.Set("telegraf", tf, nil)
 
     if err != nil {
@@ -32,17 +39,26 @@ func SaveToken(uuid, consumerId, token string, config *config.FirebaseConfigurat
     return nil
 }
 
-func main() {
-    config, _ := config.LoadFirebaseConfig()
-    fmt.Println(config)
-    err := CheckUser("iGzNX6QzfudVlwKtR8CQCj0itIU2", config)
-    if err !=nil {
-        fmt.Println(err)
-	os.Exit(1)
-    }
-    err = SaveToken("iGzNX6QzfudVlwKtR8CQCj0itIU2", "test", "testtest", config)
-    if err !=nil {
-        fmt.Println(err)
-	os.Exit(2)
-    }
-}
+//func main() {
+//    config, err := config.LoadFirebaseConfig()
+//    if err != nil {
+//        fmt.Println(err)
+//	os.Exit(1)
+//    }
+//    user := FirebaseConfiguration{
+//	Config: config,
+//	UUID: "iGzNX6QzfudVlwKtR8CQCj0itIU2",
+//	ConsumerID: "test",
+//	Token: "testtest",
+//    }
+//    err = user.CheckUser()
+//    if err !=nil {
+//        fmt.Println(err)
+//	os.Exit(1)
+//    }
+//    err = user.SaveToken()
+//    if err !=nil {
+//        fmt.Println(err)
+//	os.Exit(2)
+//    }
+//}
