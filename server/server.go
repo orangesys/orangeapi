@@ -16,30 +16,29 @@ func accessible(c echo.Context) error {
 }
 
 func create(c echo.Context) error {
-	rp   := c.QueryParam("rp")
-	uuid := c.QueryParam("uuid")
+  	retention   := c.QueryParam("rp")
+  	uuid := c.QueryParam("uuid")
+    pvc := map[string]string{
+         "10d": "10Gi",
+         "40d": "50Gi",
+         "400d": "100Gi",
+    }
 
-        pvc := map[string]string{
-             "10d": "10Gi",
-             "40d": "50Gi",
-             "400d": "100Gi",
-        }
-	wp := "mypassword"
 //	uuid := "iGzNX6QzfudVlwKtR8CQCj0itIU2"
+  	if pvcsize, ok := pvc[retention]; ok {
+    		if err := controller.CheckConsumer(uuid); err != nil {
+            log.Println(err)
+      			return c.String(http.StatusNotFound, "Not Found UUID in Firebase")
+    		}
 
-	if _, ok := pvc[rp]; ok {
-		if err := controller.CheckConsumer(uuid); err != nil {
-			return c.String(http.StatusNotFound, "Not Found UUID in Firebase")
-		}
-
-		name := common.ReleaseName()
-		if err := controller.CreateConsumer(name, wp, uuid); err != nil {
-			return c.String(http.StatusNotFound, "Some Wrong with UUI or RP")
-		}
-		return c.String(http.StatusOK, "Processing")
-	}
-
-	return c.String(http.StatusNotFound, "Not Found Retention Plan with RP")
+    		name := common.ReleaseName()
+    		if err := controller.CreateConsumer(name, retention, pvcsize, uuid); err != nil {
+            log.Println(err)
+      			return c.String(http.StatusNotFound, "Some Wrong with UUI or RP")
+    		}
+    		return c.String(http.StatusOK, "Processing")
+    	  }
+  	return c.String(http.StatusNotFound, "Not Found Retention Plan with RP")
 }
 
 
@@ -51,11 +50,11 @@ func Run() {
     e.Use(middleware.Logger())
     e.Use(middleware.Recover())
     e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-	AllowOrigins: []string{"*"},
-	AllowMethods: []string{
-		echo.GET,
-		echo.POST,
-	},
+      	AllowOrigins: []string{"*"},
+      	AllowMethods: []string{
+      		echo.GET,
+      		echo.POST,
+      	},
     }))
 
     // Login route
