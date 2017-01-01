@@ -13,6 +13,6 @@
 Go 1.7 or higher is required
 >```
 make deps
-make buildd
+make build
 bin/orangeapi
 >```
