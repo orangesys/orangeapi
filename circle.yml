@@ -29,7 +29,8 @@ test:
     - cd ${GOPATH}/src/${ORG_PATH}/orangeapi
     - make deps
     - make build
-    - make image
+    - ./build.sh
+    - docker images
 
 general:
   branches:
