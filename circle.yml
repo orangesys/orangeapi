@@ -29,7 +29,7 @@ test:
     - cd ${GOPATH}/src/${ORG_PATH}/orangeapi
     - make deps
     - make build
-    - ./build.sh
+    - make image
 
 general:
   branches:
