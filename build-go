@@ -3,5 +3,5 @@
 set -e
 
 docker run --rm -v $(pwd):/go/src/orangeapi -w /go/src/orangeapi golang:1.7.1-alpine sh \
--c "apk add --no-cache git; go-wrapper download;\
+-c "apk add --no-cache git make; go-wrapper download;\
  make build"
