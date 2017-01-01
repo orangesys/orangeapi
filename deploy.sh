@@ -8,4 +8,4 @@ if [ -z "${_tag}" ]; then
 fi
 
 docker tag "orangesys/alpine-orangeapi:${_tag}" "asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${_tag}"
-sudo /opt/google-cloud-sdk/bin/gcloud docker -- push asia.gcr.io/saas-orangesys-io/alpine-kong:${tag}
+sudo /opt/google-cloud-sdk/bin/gcloud docker -- push asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${tag}
