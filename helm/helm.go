@@ -21,7 +21,7 @@ func (i *InfluxdbCommander) InstallInfluxdb() error {
 	cmdArgs := []string{
     "install",
     releasename,
-    "influxdb",
+    "or-charts/influxdb",
     "--set",
     opt,
   }
@@ -34,7 +34,7 @@ func (g *GrafanaCommander) InstallGrafana() error {
   cmdArgs := []string{
     "install",
     releasename,
-    "grafana",
+    "or-charts/grafana",
   }
   return exec.Command(cmdName, cmdArgs...).Run()
 }
