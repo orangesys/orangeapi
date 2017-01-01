@@ -49,3 +49,13 @@ clean:
 .PHONY: deps
 deps: $(BINARYDIR)/$(GLIDE)
 	$(BINARYDIR)/$(GLIDE) install
+
+.PHONY: image
+image:
+	docker build --tag "orangesys/alpine-orangeapi:$(VERSION)" .
+
+.PHONY: deploy
+deploy:
+	docker tag "orangesys/alpine-orangeapi:$(VERSION)" "asia.gcr.io/saas-orangesys-io/alpine-orangeapi:$(VERSION)"
+	docker login -e $DOCKER_EMAIL -u _json_key -p "$(cat ${HOME}/account-auth.json)" https://asia.gcr.io
+	docker push asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${_tag}
