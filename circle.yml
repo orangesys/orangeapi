@@ -26,9 +26,6 @@ dependencies:
 
 test:
   override:
-    - cd ${GOPATH}/src/${ORG_PATH}/orangeapi
-    - make deps
-    - make build
     - ./build.sh
     - docker images
 
