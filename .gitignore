@@ -31,3 +31,5 @@ vendor/
 
 # Config
 .env
+grafana
+influxdb
