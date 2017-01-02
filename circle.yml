@@ -26,6 +26,8 @@ dependencies:
 
 test:
   override:
+    - ./build-go:
+        parallel: true
     - ./build.sh
     - docker images
 
