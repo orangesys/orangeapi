@@ -2,7 +2,6 @@ package controller
 
 import (
 		"fmt"
-		"errors"
 		_ "os"
 
 		"github.com/orangesys/orangeapi/common"
