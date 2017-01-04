@@ -12,7 +12,6 @@ import (
 		"github.com/orangesys/orangeapi/firebase"
 		"github.com/orangesys/orangeapi/config"
 )
-var ErrNotExist = errors.New("object does not exist")
 
 func create_kong_api_plugin(config *config.KongConfiguration, name, writepassword string) error {
 		client := kong.NewClient(nil, config)

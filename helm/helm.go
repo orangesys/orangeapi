@@ -20,6 +20,7 @@ func (i *InfluxdbCommander) InstallInfluxdb() error {
   cmdName := "helm"
 	cmdArgs := []string{
     "install",
+		"--namespace=default",
     releasename,
     "or-charts/influxdb",
     "--set",
@@ -33,6 +34,7 @@ func (g *GrafanaCommander) InstallGrafana() error {
   cmdName := "helm"
   cmdArgs := []string{
     "install",
+		"--namespace=default",
     releasename,
     "or-charts/grafana",
   }
