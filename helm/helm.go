@@ -15,30 +15,30 @@ type GrafanaCommander struct {
 }
 
 func (i *InfluxdbCommander) InstallInfluxdb() error {
-  releasename := "--name=" + i.Name + "-i"
-  opt := "retentionPolicy=" + i.Retention + ",persistence.size=" + i.Pvcsize
-  cmdName := "helm"
+	releasename := "--name=" + i.Name + "-i"
+	opt := "retentionPolicy=" + i.Retention + ",persistence.size=" + i.Pvcsize
+	cmdName := "helm"
 	cmdArgs := []string{
-    "install",
+		"install",
 		"--namespace=default",
-    releasename,
-    "or-charts/influxdb",
-    "--set",
-    opt,
-  }
+		releasename,
+		"or-charts/influxdb",
+		"--set",
+		opt,
+	}
 	return exec.Command(cmdName, cmdArgs...).Run()
 }
 
 func (g *GrafanaCommander) InstallGrafana() error {
-  releasename := "--name=" + g.Name + "-g"
-  cmdName := "helm"
-  cmdArgs := []string{
-    "install",
+	releasename := "--name=" + g.Name + "-g"
+	cmdName := "helm"
+	cmdArgs := []string{
+		"install",
 		"--namespace=default",
-    releasename,
-    "or-charts/grafana",
-  }
-  return exec.Command(cmdName, cmdArgs...).Run()
+		releasename,
+		"or-charts/grafana",
+	}
+	return exec.Command(cmdName, cmdArgs...).Run()
 }
 
 //func main()  {

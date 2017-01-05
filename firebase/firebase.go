@@ -1,42 +1,42 @@
 package firebase
 
 import (
-    "fmt"
-    _ "os"
+	"fmt"
+	_ "os"
 
-    "github.com/JustinTulloss/firebase"
-    "github.com/orangesys/orangeapi/config"
+	"github.com/JustinTulloss/firebase"
+	"github.com/orangesys/orangeapi/config"
 )
 
 type FirebaseConfiguration struct {
-	Config		*config.FirebaseConfiguration
-	UUID		string
-	ConsumerID	string
-	Token		string
+	Config     *config.FirebaseConfiguration
+	UUID       string
+	ConsumerID string
+	Token      string
 }
 
 func (f *FirebaseConfiguration) CheckUser() error {
-    c := firebase.NewClient(f.Config.FirebaseURL + "/users/" + f.UUID, f.Config.FirebaseAuth, nil)
-    var r map[string]interface{}
-    err := c.Value(&r)
-    if err != nil {
-        return err
-    }
-    if r == nil {
-        return fmt.Errorf("%s %s", "can not get consumer", f.UUID)
-    }
-    return nil
+	c := firebase.NewClient(f.Config.FirebaseURL+"/users/"+f.UUID, f.Config.FirebaseAuth, nil)
+	var r map[string]interface{}
+	err := c.Value(&r)
+	if err != nil {
+		return err
+	}
+	if r == nil {
+		return fmt.Errorf("%s %s", "can not get consumer", f.UUID)
+	}
+	return nil
 }
 
 func (f *FirebaseConfiguration) SaveToken() error {
-    c := firebase.NewClient(f.Config.FirebaseURL + "/users/" + f.UUID, f.Config.FirebaseAuth, nil)
-    tf := map[string]interface{}{ "consumerID": f.ConsumerID, "token": f.Token }
-    _, err := c.Set("telegraf", tf, nil)
+	c := firebase.NewClient(f.Config.FirebaseURL+"/users/"+f.UUID, f.Config.FirebaseAuth, nil)
+	tf := map[string]interface{}{"consumerID": f.ConsumerID, "token": f.Token}
+	_, err := c.Set("telegraf", tf, nil)
 
-    if err != nil {
-	return err
-    }
-    return nil
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 //func main() {
