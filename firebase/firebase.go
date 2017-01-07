@@ -30,7 +30,7 @@ func (f *FirebaseConfiguration) CheckUser() error {
 
 func (f *FirebaseConfiguration) SaveToken() error {
 	c := firebase.NewClient(f.Config.FirebaseURL+"/users/"+f.UUID, f.Config.FirebaseAuth, nil)
-	tf := map[string]interface{}{"consumerID": f.ConsumerID, "token": f.Token}
+	tf := map[string]interface{}{"consumerId": f.ConsumerID, "token": f.Token}
 	_, err := c.Set("telegraf", tf, nil)
 
 	if err != nil {
