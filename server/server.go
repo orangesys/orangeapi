@@ -9,10 +9,28 @@ import (
 
 	"github.com/orangesys/orangeapi/common"
 	"github.com/orangesys/orangeapi/controller"
+	"github.com/orangesys/orangeapi/storage"
 )
 
 func accessible(c echo.Context) error {
 	return c.String(http.StatusOK, "Accessible")
+}
+
+func dbused(c echo.Context) error {
+	uuid := c.QueryParam("uuid")
+	consumerId := c.QueryParam("consumerid")
+	if err := controller.CheckConsumer(uuid); err != nil {
+		log.Println(err)
+		return c.String(http.StatusNotFound, "Not Found UUID in Firebase")
+	}
+	i := storage.InfluxDBClient(consumerId)
+	s, err := storage.GetStorageUsed(i)
+	if err != nil {
+		log.Println(err)
+    return c.String(http.StatusNotFound, "Not Found host in orangesys-k8s")
+	}
+
+	return c.String(http.StatusOK, s)
 }
 
 func create(c echo.Context) error {
@@ -58,6 +76,9 @@ func Run() {
 
 	// Login route
 	e.POST("/create", create)
+
+	// Get Storage Used
+	e.GET("/dbused", dbused)
 
 	// Unauthenticated route
 	e.GET("/", accessible)
