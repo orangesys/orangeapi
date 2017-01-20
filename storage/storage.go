@@ -13,7 +13,7 @@ const (
 
 func InfluxDBClient(consumerId string) client.Client {
     c, err := client.NewHTTPClient(client.HTTPConfig{
-        Addr:     "http://" + consumerId + "-i-influxdb.default:8086",
+        Addr:     "http://" + consumerId + "-i-influxdb.default",
     })
     if err != nil {
         log.Fatalln("Error: ", err)
