@@ -1,4 +1,5 @@
-VERSION := 0.2.2
+source _VERSION
+VERSION := ${_VERSION}
 REVISION := $(shell git rev-parse --short HEAD)
 BUILDTIME := $(shell date '+%Y/%m/%d %H:%M:%S %Z')
 GOVERSION := $(subst go version ,,$(shell go version))
