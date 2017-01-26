@@ -12,9 +12,6 @@ import (
 	"github.com/orangesys/orangeapi/storage"
 )
 
-type StorageUsage struct {
-        storageUsage int64 `json:"storageUsage"`
-}
 
 func accessible(c echo.Context) error {
 	return c.String(http.StatusOK, "Accessible")
@@ -33,9 +30,12 @@ func storageusage(c echo.Context) error {
 	    log.Println(err)
             return c.String(http.StatusNotFound, "Not Found host in orangesys-k8s")
 	}
-        _StorageUsage := StorageUsage{storageUsage: s}
+        var content struct {
+                StorageUsage int64 `json:"storageUsage"`
+        }
+        content.StorageUsage = s
 
-	return c.JSON(http.StatusOK, _StorageUsage)
+	return c.JSON(http.StatusOK, &content)
 }
 
 func create(c echo.Context) error {
