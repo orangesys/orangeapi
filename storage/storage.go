@@ -28,15 +28,15 @@ func GetStorageUsed(c client.Client) (int64, error) {
     }
     resp, err := c.Query(q)
     if err != nil {
-        return "", err
+        return 0, err
     }
     if resp.Error() != nil {
-        return "", err
+        return 0, err
     }
 
     res, err := resp.Results[0].Series[0].Values[0][1].(json.Number).Int64()
     if err != nil {
-        return "", err
+        return 0, err
     }
 
     return res, nil

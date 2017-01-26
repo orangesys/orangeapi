@@ -14,7 +14,7 @@ import (
 
 type StorageUsage struct {
         storageUsage int64
-)
+}
 
 func accessible(c echo.Context) error {
 	return c.String(http.StatusOK, "Accessible")
