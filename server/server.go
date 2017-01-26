@@ -13,7 +13,7 @@ import (
 )
 
 type StorageUsage struct {
-        storageUsage int64
+        storageUsage int64 `json:"storageUsage"`
 }
 
 func accessible(c echo.Context) error {
