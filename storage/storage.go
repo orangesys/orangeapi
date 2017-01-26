@@ -5,7 +5,7 @@ import (
     "fmt"
     "github.com/influxdata/influxdb/client/v2"
     "log"
-  	"strconv"
+    "strconv"
 )
 
 const (
