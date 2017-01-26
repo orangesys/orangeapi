@@ -13,8 +13,8 @@ import (
 )
 
 type StorageUsage struct {
-    storageUsage string `json: "storageUsage"`
-}
+        storageUsage int64
+)
 
 func accessible(c echo.Context) error {
 	return c.String(http.StatusOK, "Accessible")
@@ -33,11 +33,9 @@ func storageusage(c echo.Context) error {
 	    log.Println(err)
             return c.String(http.StatusNotFound, "Not Found host in orangesys-k8s")
 	}
-        su := &StorageUsage{
-          storageUsage: s,
-        }
+        _StorageUsage := StorageUsage{storageUsage: s}
 
-	return c.JSON(http.StatusOK, su)
+	return c.JSON(http.StatusOK, _StorageUsage)
 }
 
 func create(c echo.Context) error {

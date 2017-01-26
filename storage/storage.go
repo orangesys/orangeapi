@@ -5,7 +5,6 @@ import (
     "fmt"
     "github.com/influxdata/influxdb/client/v2"
     "log"
-    "strconv"
 )
 
 const (
@@ -22,7 +21,7 @@ func InfluxDBClient(consumerId string) client.Client {
     return c
 }
 
-func GetStorageUsed(c client.Client) (string, error) {
+func GetStorageUsed(c client.Client) (int64, error) {
     q := client.Query{
         Command: fmt.Sprintf("select sum(diskBytes) FROM tsm1_filestore WHERE time > now() - 19s"),
         Database: database,
@@ -40,7 +39,7 @@ func GetStorageUsed(c client.Client) (string, error) {
         return "", err
     }
 
-    return strconv.FormatInt(res, 10), nil
+    return res, nil
 }
 
 //func main() {
