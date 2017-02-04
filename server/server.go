@@ -12,11 +12,12 @@ import (
 	"github.com/orangesys/orangeapi/storage"
 )
 
+
 func accessible(c echo.Context) error {
 	return c.String(http.StatusOK, "Accessible")
 }
 
-func dbused(c echo.Context) error {
+func storageusage(c echo.Context) error {
 	uuid := c.QueryParam("uuid")
 	consumerId := c.QueryParam("consumerId")
 	if err := controller.CheckConsumer(uuid); err != nil {
@@ -26,11 +27,15 @@ func dbused(c echo.Context) error {
 	i := storage.InfluxDBClient(consumerId)
 	s, err := storage.GetStorageUsed(i)
 	if err != nil {
-		log.Println(err)
-    return c.String(http.StatusNotFound, "Not Found host in orangesys-k8s")
+	    log.Println(err)
+            return c.String(http.StatusNotFound, "Not Found host in orangesys-k8s")
 	}
+        var content struct {
+                StorageUsage int64 `json:"storageUsage"`
+        }
+        content.StorageUsage = s
 
-	return c.String(http.StatusOK, s)
+	return c.JSON(http.StatusOK, &content)
 }
 
 func create(c echo.Context) error {
@@ -78,7 +83,7 @@ func Run() {
 	e.POST("/create", create)
 
 	// Get Storage Used
-	e.GET("/dbused", dbused)
+	e.GET("/storageusage", storageusage)
 
 	// Unauthenticated route
 	e.GET("/", accessible)
