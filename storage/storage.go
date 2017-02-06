@@ -23,7 +23,7 @@ func InfluxDBClient(consumerId string) client.Client {
 
 func GetStorageUsed(c client.Client) (int64, error) {
     q := client.Query{
-        Command: fmt.Sprintf("select sum(diskBytes) FROM tsm1_filestore WHERE time > now() - 19s"),
+        Command: fmt.Sprintf("select sum(diskBytes) FROM tsm1_filestore WHERE time > now() - 30s GROUP BY time(2s) fill(none) limit 1;"),
         Database: database,
     }
     resp, err := c.Query(q)
