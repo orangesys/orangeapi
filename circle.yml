@@ -1,9 +1,6 @@
 machine:
   go:
     version: 1.8.1
-  pre:
-    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
-
   environment:
     PROJECT_NAME: orangesys
     CLOUDSDK_COMPUTE_ZONE: asia-northeast1-c
@@ -26,11 +23,6 @@ test:
         parallel: true
     - ./scripts/build.sh
     - docker images
-
-general:
-  branches:
-    ignore:
-      - /^(?!master).*$/
 
 deployment:
   release:
