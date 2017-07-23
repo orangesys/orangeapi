@@ -24,6 +24,7 @@ _testmain.go
 *.prof
 
 bin/*
+dist/*
 !bin/.keep
 glide.lock
 

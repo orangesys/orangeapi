@@ -14,10 +14,8 @@
 
 # Development
 Go 1.7 or higher is required
->```
+```
 make deps
 make build
 bin/orangeapi
->```
-
-
+```
