@@ -1,16 +1,7 @@
-NO_COLOR=\033[0m
-OK_COLOR=\033[32;01m
-ERROR_COLOR=\033[31;01m
-WARN_COLOR=\033[33;01m
-
-IMPORT_PATH := github.com/orangesys/orangeapi
-PKG_SRC := $(IMPORT_PATH)/cmd/orangeapi
-
-VERSION := $(shell git describe --always --tags)
+VERSION := 0.2.3
 REVISION := $(shell git rev-parse --short HEAD)
 BUILDTIME := $(shell date '+%Y/%m/%d %H:%M:%S %Z')
 GOVERSION := $(subst go version ,,$(shell go version))
-
 
 BINARYDIR := bin
 BINARY := orangeapi
@@ -49,8 +40,7 @@ endif
 
 .PHONY: build
 build:
-	@echo "$(OK_COLOR)==> Building... $(NO_COLOR)"
-	@/bin/sh -c "PKG_SRC=$(PKG_SRC) VERSION=${VERSION} ./scripts/build.sh"
+	go build $(LDFLAGS) -o $(BINARYDIR)/$(BINARY)
 
 .PHONY: clean
 clean:
