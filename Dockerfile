@@ -1,6 +1,7 @@
-FROM alpine:3.4
+FROM alpine:3.6
 MAINTAINER gavin zhou <gavin.zhou@gmail.com>
-ADD bin/orangeapi /orangeapi
+COPY dist/orangeapi_linux-amd64 /
+COPY linux-amd64/helm /usr/sbin/
 
 RUN echo "==> Installing ..." \
   && apk add --no-cache ca-certificates

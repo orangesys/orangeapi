@@ -1,12 +1,8 @@
 #!/bin/bash
 
 set -ex
-_tag=$1
+_v=$(git describe --always --tags)
+version=${_v#*v}
 
-if [ -z "${_tag}" ]; then
-    source _VERSION
-    _tag=${_VERSION}
-fi
-
-docker tag "orangesys/alpine-orangeapi:${_tag}" "asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${_tag}"
-sudo /opt/google-cloud-sdk/bin/gcloud docker -- push asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${_tag}
+docker tag "orangesys/alpine-orangeapi:${version}" "asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${version}"
+sudo /opt/google-cloud-sdk/bin/gcloud docker -- push asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${version}

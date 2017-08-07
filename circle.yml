@@ -19,9 +19,9 @@ dependencies:
 
 test:
   override:
-    - ./scripts/build-go:
-        parallel: true
+    - curl -sSL https://storage.googleapis.com/kubernetes-helm/helm-v2.5.1-linux-amd64.tar.gz |tar -xz linux-amd64/helm
     - ./scripts/build.sh
+    - ./scripts/build-docker.sh
     - docker images
 
 deployment:
