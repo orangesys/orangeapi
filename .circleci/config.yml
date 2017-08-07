@@ -38,7 +38,6 @@ jobs:
           command: |
             mkdir -p /tmp/workspace/orangeapi
             mv * .[!.]* /tmp/workspace/orangeapi/
-            ls /tmp/workspace/orangeapi/dist/
       - persist_to_workspace:
           root: *workspace_root
           paths:
