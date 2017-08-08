@@ -5,6 +5,7 @@ import (
 	"github.com/orangesys/orangeapi/pkg/firebase"
 )
 
+// CheckConsumer with firebase
 func CheckConsumer(uuid string) error {
 	//	uuid := "iGzNX6QzfudVlwKtR8CQCj0itIU2"
 	//	load env ORANGEAPI_FIREBASE_AUTH

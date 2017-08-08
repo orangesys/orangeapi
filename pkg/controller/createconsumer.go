@@ -6,12 +6,12 @@ import (
 	"github.com/orangesys/orangeapi/pkg/common"
 	"github.com/orangesys/orangeapi/pkg/config"
 	"github.com/orangesys/orangeapi/pkg/firebase"
-	"github.com/orangesys/orangeapi/pkg/helm"
 	"github.com/orangesys/orangeapi/pkg/k8s"
 	"github.com/orangesys/orangeapi/pkg/kong"
+	"github.com/orangesys/orangeapi/pkg/wheel"
 )
 
-func create_kong_api_plugin(config *config.KongConfiguration, name, writepassword string) error {
+func createKongAPIPlugin(config *config.KongConfiguration, name, writepassword string) error {
 	client := kong.NewClient(nil, config)
 	influxdbAPI := &kong.API{
 		Name:        name + "-influxdb",
@@ -120,7 +120,7 @@ func CreateOrangesys(name, retention, pvcsize string) (string, error) {
 	data := "write-password"
 	key := name + "-i-influxdb"
 
-	i := helm.CreateInfluxDB{
+	i := wheel.CreateInfluxDB{
 		Name:      name,
 		Retention: retention,
 		PVCSize:   pvcsize,
@@ -129,7 +129,7 @@ func CreateOrangesys(name, retention, pvcsize string) (string, error) {
 		return "", fmt.Errorf("%s %s", "can not deploy influxdb with", name)
 	}
 
-	g := helm.CreateGrafana{
+	g := wheel.CreateGrafana{
 		Name: name,
 	}
 
@@ -160,7 +160,7 @@ func CreateConsumer(name, retention, pvcsize, uuid string) error {
 		return err
 	}
 
-	if err := create_kong_api_plugin(kongconfig, name, wp); err != nil {
+	if err := createKongAPIPlugin(kongconfig, name, wp); err != nil {
 		return err
 	}
 
@@ -172,7 +172,7 @@ func CreateConsumer(name, retention, pvcsize, uuid string) error {
 		Iss:    key,
 		Secret: secret,
 	}
-	consumer_jwt_token, err := consumer.CreateToken()
+	consumerJwtToken, err := consumer.CreateToken()
 	if err != nil {
 		return err
 	}
@@ -186,7 +186,7 @@ func CreateConsumer(name, retention, pvcsize, uuid string) error {
 		Config:     firebaseconfig,
 		UUID:       uuid,
 		ConsumerID: name,
-		Token:      consumer_jwt_token,
+		Token:      consumerJwtToken,
 	}
 	if err := user.SaveToken(); err != nil {
 		return err
