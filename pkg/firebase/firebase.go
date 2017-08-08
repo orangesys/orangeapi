@@ -5,7 +5,7 @@ import (
 	_ "os"
 
 	"github.com/JustinTulloss/firebase"
-	"github.com/orangesys/orangeapi/config"
+	"github.com/orangesys/orangeapi/pkg/config"
 )
 
 type FirebaseConfiguration struct {

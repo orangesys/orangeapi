@@ -1,10 +1,8 @@
 package controller
 
 import (
-	_ "fmt"
-
-	"github.com/orangesys/orangeapi/config"
-	"github.com/orangesys/orangeapi/firebase"
+	"github.com/orangesys/orangeapi/pkg/config"
+	"github.com/orangesys/orangeapi/pkg/firebase"
 )
 
 func CheckConsumer(uuid string) error {

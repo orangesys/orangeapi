@@ -7,9 +7,9 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	"github.com/orangesys/orangeapi/common"
-	"github.com/orangesys/orangeapi/controller"
-	"github.com/orangesys/orangeapi/storage"
+	"github.com/orangesys/orangeapi/pkg/common"
+	"github.com/orangesys/orangeapi/pkg/controller"
+	"github.com/orangesys/orangeapi/pkg/storage"
 )
 
 func accessible(c echo.Context) error {

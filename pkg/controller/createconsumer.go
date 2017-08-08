@@ -3,12 +3,12 @@ package controller
 import (
 	"fmt"
 
-	"github.com/orangesys/orangeapi/common"
-	"github.com/orangesys/orangeapi/config"
-	"github.com/orangesys/orangeapi/firebase"
-	"github.com/orangesys/orangeapi/helm"
-	"github.com/orangesys/orangeapi/k8s"
-	"github.com/orangesys/orangeapi/kong"
+	"github.com/orangesys/orangeapi/pkg/common"
+	"github.com/orangesys/orangeapi/pkg/config"
+	"github.com/orangesys/orangeapi/pkg/firebase"
+	"github.com/orangesys/orangeapi/pkg/helm"
+	"github.com/orangesys/orangeapi/pkg/k8s"
+	"github.com/orangesys/orangeapi/pkg/kong"
 )
 
 func create_kong_api_plugin(config *config.KongConfiguration, name, writepassword string) error {
