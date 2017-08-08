@@ -2,7 +2,6 @@ package controller
 
 import (
 	"fmt"
-	_ "os"
 
 	"github.com/orangesys/orangeapi/common"
 	"github.com/orangesys/orangeapi/config"
@@ -85,7 +84,8 @@ func create_kong_api_plugin(config *config.KongConfiguration, name, writepasswor
 	return nil
 }
 
-func create_kong_consumer_with_jwt(config *config.KongConfiguration, name string) (string, string, error) {
+// createKongConsumerWithJwt create kong consumer jwt token
+func createKongConsumerWithJwt(config *config.KongConfiguration, name string) (string, string, error) {
 	client := kong.NewClient(nil, config)
 	generateConsumer := &kong.Consumer{
 		Username: name,
@@ -143,39 +143,12 @@ func CreateOrangesys(name, retention, pvcsize string) (string, error) {
 	return writepassword, nil
 }
 
-func deploy_influxdb_grafana(name, retention, pvcsize string) (string, error) {
-	namespace := "default"
-	data := "write-password"
-	key := name + "-i-influxdb"
-
-	influxdb := helm.InfluxdbCommander{
-		Name:      name,
-		Retention: retention,
-		Pvcsize:   pvcsize,
-	}
-	if err := influxdb.InstallInfluxdb(); err != nil {
-		return "", fmt.Errorf("%s %s", "can not deploy influxdb with", name)
-	}
-
-	grafana := helm.GrafanaCommander{
-		Name: name,
-	}
-	if err := grafana.InstallGrafana(); err != nil {
-		return "", fmt.Errorf("%s %s", "can not deploy grafana with", name)
-	}
-	writepassword, err := k8s.GetSecret(namespace, key, data)
-	if err != nil {
-		return "", err
-	}
-	return writepassword, nil
-}
-
+// CreateConsumer create consumer with kong
 func CreateConsumer(name, retention, pvcsize, uuid string) error {
 	//	name := "rlxebz"
 	//	wp := "mypassword"
 	//	uuid := "iGzNX6QzfudVlwKtR8CQCj0itIU2"
 
-	//wp, err := deploy_influxdb_grafana(name, retention, pvcsize)
 	wp, err := CreateOrangesys(name, retention, pvcsize)
 	if err != nil {
 		fmt.Println("can not get grafana write password")
@@ -191,7 +164,7 @@ func CreateConsumer(name, retention, pvcsize, uuid string) error {
 		return err
 	}
 
-	key, secret, err := create_kong_consumer_with_jwt(kongconfig, name)
+	key, secret, err := createKongConsumerWithJwt(kongconfig, name)
 	if err != nil {
 		return err
 	}

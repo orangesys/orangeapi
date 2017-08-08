@@ -63,11 +63,6 @@ jobs:
             tar -xz -C /tmp/ -f /tmp/docker-$VER.tgz
             mv /tmp/docker/* /usr/bin
       - run:
-          name: Get helm
-          command: |
-            set +o pipefail
-            curl -sSL https://storage.googleapis.com/kubernetes-helm/helm-v2.5.1-linux-amd64.tar.gz |tar -xz linux-amd64/helm            
-      - run:
           name: Build orangeapi Docker images
           command: |
             _v=$(git describe --always --tags)
