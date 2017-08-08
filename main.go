@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
+	"go.uber.org/zap"
 
 	"github.com/orangesys/orangeapi/pkg/config"
 	"github.com/orangesys/orangeapi/pkg/k8s"
@@ -11,16 +9,14 @@ import (
 )
 
 func main() {
-	firebaseconfig, err := config.LoadFirebaseConfig()
-	if err != nil {
-		fmt.Println(err)
-	}
+	log, _ := zap.NewProduction()
+	firebaseconfig, _ := config.LoadFirebaseConfig()
+
 	if firebaseconfig.FirebaseAuth == "" {
-		log.Println("cat not get FirebaseAuth")
-		os.Exit(1)
+		log.Fatal("cat not get FirebaseAuth")
 	}
 	printVersion()
-	log.Println("Starting orangeapi...")
+	log.Info("Starting orangeapi")
 	k8s.WaitForKubernetesProxy()
 	server.Run()
 }
