@@ -9,7 +9,7 @@ import (
 
 type JWTCredentials struct {
 	Data  []JWTCredential `json:"data,omitempty"`
-	Total int                   `json:"total,omitempty"`
+	Total int             `json:"total,omitempty"`
 }
 
 //            "algorithm": "HS256",

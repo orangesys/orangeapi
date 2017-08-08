@@ -114,6 +114,33 @@ func create_kong_consumer_with_jwt(config *config.KongConfiguration, name string
 	return _k, _s, nil
 }
 
+// CreateOrangesys create influxdb and grafana
+func CreateOrangesys(name, retention, pvcsize string) (string, error) {
+	namespace := "default"
+	data := "write-password"
+	key := name + "-i-influxdb"
+
+	i := helm.CreateInfluxDB{
+		Name:      name,
+		Retention: retention,
+		PVCSize:   pvcsize,
+	}
+	if err := i.WheelInfluxdb(); err != nil {
+		return "", fmt.Errorf("%s %s", "can not deploy influxdb with", name)
+	}
+	g := helm.CreateGrafana{
+		Name: name,
+	}
+	if err := g.WheelGrafana(); err != nil {
+		return "", fmt.Errorf("%s %s", "can not deploy grafana with", name)
+	}
+	writepassword, err := k8s.GetSecret(namespace, key, data)
+	if err != nil {
+		return "", err
+	}
+	return writepassword, nil
+}
+
 func deploy_influxdb_grafana(name, retention, pvcsize string) (string, error) {
 	namespace := "default"
 	data := "write-password"
@@ -146,8 +173,10 @@ func CreateConsumer(name, retention, pvcsize, uuid string) error {
 	//	wp := "mypassword"
 	//	uuid := "iGzNX6QzfudVlwKtR8CQCj0itIU2"
 
-	wp, err := deploy_influxdb_grafana(name, retention, pvcsize)
+	//wp, err := deploy_influxdb_grafana(name, retention, pvcsize)
+	wp, err := CreateOrangesys(name, retention, pvcsize)
 	if err != nil {
+		fmt.Println("can not get grafana write password")
 		return err
 	}
 

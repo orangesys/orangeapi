@@ -1,45 +1,45 @@
 package storage
 
 import (
-    "encoding/json"
-    "fmt"
-    "github.com/influxdata/influxdb/client/v2"
-    "log"
+	"encoding/json"
+	"fmt"
+	"github.com/influxdata/influxdb/client/v2"
+	"log"
 )
 
 const (
-    database = "_internal"
+	database = "_internal"
 )
 
 func InfluxDBClient(consumerId string) client.Client {
-    c, err := client.NewHTTPClient(client.HTTPConfig{
-        Addr:     "http://" + consumerId + "-i-influxdb.default",
-    })
-    if err != nil {
-        log.Fatalln("Error: ", err)
-    }
-    return c
+	c, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr: "http://" + consumerId + "-i-influxdb.default",
+	})
+	if err != nil {
+		log.Fatalln("Error: ", err)
+	}
+	return c
 }
 
 func GetStorageUsed(c client.Client) (int64, error) {
-    q := client.Query{
-        Command: fmt.Sprintf("select sum(diskBytes) FROM tsm1_filestore WHERE time > now() - 30s GROUP BY time(2s) fill(none) limit 1;"),
-        Database: database,
-    }
-    resp, err := c.Query(q)
-    if err != nil {
-        return 0, err
-    }
-    if resp.Error() != nil {
-        return 0, err
-    }
+	q := client.Query{
+		Command:  fmt.Sprintf("select sum(diskBytes) FROM tsm1_filestore WHERE time > now() - 30s GROUP BY time(2s) fill(none) limit 1;"),
+		Database: database,
+	}
+	resp, err := c.Query(q)
+	if err != nil {
+		return 0, err
+	}
+	if resp.Error() != nil {
+		return 0, err
+	}
 
-    res, err := resp.Results[0].Series[0].Values[0][1].(json.Number).Int64()
-    if err != nil {
-        return 0, err
-    }
+	res, err := resp.Results[0].Series[0].Values[0][1].(json.Number).Int64()
+	if err != nil {
+		return 0, err
+	}
 
-    return res, nil
+	return res, nil
 }
 
 //func main() {

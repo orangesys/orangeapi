@@ -12,7 +12,6 @@ import (
 	"github.com/orangesys/orangeapi/storage"
 )
 
-
 func accessible(c echo.Context) error {
 	return c.String(http.StatusOK, "Accessible")
 }
@@ -27,13 +26,13 @@ func storageusage(c echo.Context) error {
 	i := storage.InfluxDBClient(consumerId)
 	s, err := storage.GetStorageUsed(i)
 	if err != nil {
-	    log.Println(err)
-            return c.String(http.StatusNotFound, "Not Found host in orangesys-k8s")
+		log.Println(err)
+		return c.String(http.StatusNotFound, "Not Found host in orangesys-k8s")
 	}
-        var content struct {
-                StorageUsage int64 `json:"storageUsage"`
-        }
-        content.StorageUsage = s
+	var content struct {
+		StorageUsage int64 `json:"storageUsage"`
+	}
+	content.StorageUsage = s
 
 	return c.JSON(http.StatusOK, &content)
 }
