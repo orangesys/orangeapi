@@ -5,9 +5,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/orangesys/orangeapi/config"
-	"github.com/orangesys/orangeapi/k8s"
-	"github.com/orangesys/orangeapi/server"
+	"github.com/orangesys/orangeapi/pkg/config"
+	"github.com/orangesys/orangeapi/pkg/k8s"
+	"github.com/orangesys/orangeapi/pkg/server"
 )
 
 func main() {

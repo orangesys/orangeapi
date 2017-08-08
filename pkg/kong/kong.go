@@ -4,7 +4,7 @@ import (
 	_ "fmt"
 	"net/http"
 
-	"github.com/orangesys/orangeapi/config"
+	"github.com/orangesys/orangeapi/pkg/config"
 )
 
 type Client struct {
