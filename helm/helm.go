@@ -27,7 +27,7 @@ type CreateInfluxDB struct {
 
 type CreateGrafana struct {
 	Name     string
-	ChartURL string
+	ChartURL string `json:"chart_url"`
 }
 
 // WheelInfluxdb create influxdb with wheel

@@ -128,9 +128,11 @@ func CreateOrangesys(name, retention, pvcsize string) (string, error) {
 	if err := i.WheelInfluxdb(); err != nil {
 		return "", fmt.Errorf("%s %s", "can not deploy influxdb with", name)
 	}
+
 	g := helm.CreateGrafana{
 		Name: name,
 	}
+
 	if err := g.WheelGrafana(); err != nil {
 		return "", fmt.Errorf("%s %s", "can not deploy grafana with", name)
 	}
