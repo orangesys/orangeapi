@@ -65,9 +65,8 @@ jobs:
       - run:
           name: Build orangeapi Docker images
           command: |
-            _v=$(git describe --always --tags)
-            version=${_v#*v}
-            docker build --tag "orangesys/alpine-orangeapi:${version}" .
+            set +o pipefail
+            ./scripts/create-container.sh
             docker images
             mkdir -p /caches
             docker save -o /caches/alpine-orangeapi.tar "orangesys/alpine-orangeapi:${version}"
