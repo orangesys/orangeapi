@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 )
 
+// ReleaseName create 6 chars with release name
 func ReleaseName() string {
 	const alphanum = "abcdefghijkmnopqrstuvwxyz"
 	var bytes = make([]byte, 6)

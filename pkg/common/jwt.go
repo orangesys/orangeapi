@@ -1,7 +1,6 @@
 package common
 
 import (
-	_ "fmt"
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -21,12 +20,3 @@ func (c *Consumer) CreateToken() (string, error) {
 	}
 	return tokenString, err
 }
-
-//func main() {
-//	consumer := Consumer{
-//		Iss: "a36c3049b36249a3c9f8891cb127243c",
-//		Secret : "e71829c351aa4242c2719cbfbe671c09",
-//	}
-//	t, err := consumer.CreateToken()
-//	fmt.Println(t, err)
-//}
