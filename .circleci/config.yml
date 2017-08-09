@@ -67,9 +67,6 @@ jobs:
           command: |
             set +o pipefail
             ./scripts/create-container.sh
-            docker images
-            mkdir -p /caches
-            docker save -o /caches/alpine-orangeapi.tar "orangesys/alpine-orangeapi:${version}"
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
