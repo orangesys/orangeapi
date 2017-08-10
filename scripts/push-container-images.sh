@@ -12,4 +12,4 @@ gcloud config set project $PROJECT_NAME
 gcloud docker -- push asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${version}
 
 docker logout
-curl -X POST https://hooks.microbadger.com/images/orangesys/orangeapi/_KVMiOGLgk1nh5YPzaUTrZ2kTpU=
+curl -X POST https://hooks.microbadger.com/images/orangesys/alpine-orangeapi/_24B4d4BBsQhsH6Av_nH1ZKsl2s=
