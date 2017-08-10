@@ -4,7 +4,7 @@ ERROR_COLOR=\033[31;01m
 WARN_COLOR=\033[33;01m
 
 IMPORT_PATH := github.com/orangesys/orangeapi
-PKG_SRC := $(IMPORT_PATH)
+PKG_SRC := $(IMPORT_PATH)/cmd/orangeapi
 
 VERSION := $(shell git describe --always --tags)
 REVISION := $(shell git rev-parse --short HEAD)
