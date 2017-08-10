@@ -1,8 +1,9 @@
 package server
 
 import (
-	"log"
 	"net/http"
+
+	log "github.com/rs/zerolog/log"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -18,15 +19,15 @@ func accessible(c echo.Context) error {
 
 func storageusage(c echo.Context) error {
 	uuid := c.QueryParam("uuid")
-	consumerId := c.QueryParam("consumerId")
+	consumerID := c.QueryParam("consumerID")
 	if err := controller.CheckConsumer(uuid); err != nil {
-		log.Println(err)
+		log.Error().Msgf("Not Found UUID in Firebase: %v", err)
 		return c.String(http.StatusNotFound, "Not Found UUID in Firebase")
 	}
-	i := storage.InfluxDBClient(consumerId)
+	i := storage.InfluxDBClient(consumerID)
 	s, err := storage.GetStorageUsed(i)
 	if err != nil {
-		log.Println(err)
+		log.Error().Msgf("Not Found host in orangesys-k8s: %v", err)
 		return c.String(http.StatusNotFound, "Not Found host in orangesys-k8s")
 	}
 	var content struct {
@@ -49,13 +50,13 @@ func create(c echo.Context) error {
 	//	uuid := "iGzNX6QzfudVlwKtR8CQCj0itIU2"
 	if pvcsize, ok := pvc[retention]; ok {
 		if err := controller.CheckConsumer(uuid); err != nil {
-			log.Println(err)
+			log.Error().Msgf("Not Found UUID in Firebase: %v", err)
 			return c.String(http.StatusNotFound, "Not Found UUID in Firebase")
 		}
 
 		name := common.ReleaseName()
 		if err := controller.CreateConsumer(name, retention, pvcsize, uuid); err != nil {
-			log.Println(err)
+			log.Error().Msgf("Some Wrong with UUI or RP: %v", err)
 			return c.String(http.StatusNotFound, "Some Wrong with UUI or RP")
 		}
 		return c.String(http.StatusOK, "Processing")
@@ -63,8 +64,8 @@ func create(c echo.Context) error {
 	return c.String(http.StatusNotFound, "Not Found Retention Plan with RP")
 }
 
+// Run is start echo server
 func Run() {
-	log.Println("Starting orangeapi...")
 	e := echo.New()
 
 	// Middleware

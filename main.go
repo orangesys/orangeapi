@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
+	log "github.com/rs/zerolog/log"
 
 	"github.com/orangesys/orangeapi/pkg/config"
 	"github.com/orangesys/orangeapi/pkg/k8s"
@@ -11,16 +9,13 @@ import (
 )
 
 func main() {
-	firebaseconfig, err := config.LoadFirebaseConfig()
-	if err != nil {
-		fmt.Println(err)
-	}
+	firebaseconfig, _ := config.LoadFirebaseConfig()
+
 	if firebaseconfig.FirebaseAuth == "" {
-		log.Println("cat not get FirebaseAuth")
-		os.Exit(1)
+		log.Fatal().Msg("cat not get FirebaseAuth")
 	}
 	printVersion()
-	log.Println("Starting orangeapi...")
+	log.Info().Msg("Starting orangeapi")
 	k8s.WaitForKubernetesProxy()
 	server.Run()
 }

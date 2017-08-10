@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-// newUUID generates a random UUID according to RFC 4122
+// UUID generates a random UUID according to RFC 4122
 func UUID() (string, error) {
 	uuid := make([]byte, 16)
 	n, err := io.ReadFull(rand.Reader, uuid)

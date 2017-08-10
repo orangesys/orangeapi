@@ -2,9 +2,9 @@ package k8s
 
 import (
 	"encoding/base64"
-	_ "fmt"
 )
 
+// GetSecret with secret from k8s
 func GetSecret(namespace, key, data string) (string, error) {
 	s, err := getSecret(namespace, key)
 	if err != nil {
