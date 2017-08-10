@@ -19,7 +19,7 @@ func accessible(c echo.Context) error {
 
 func storageusage(c echo.Context) error {
 	uuid := c.QueryParam("uuid")
-	consumerID := c.QueryParam("consumerID")
+	consumerID := c.QueryParam("consumerId")
 	if err := controller.CheckConsumer(uuid); err != nil {
 		log.Error().Msgf("Not Found UUID in Firebase: %v", err)
 		return c.String(http.StatusNotFound, "Not Found UUID in Firebase")
