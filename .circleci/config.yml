@@ -114,6 +114,7 @@ jobs:
           name: Push docker hub and gcloud
           command: |
             set +o pipefail
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
             ./scripts/push-container-images.sh
 
 workflows:
