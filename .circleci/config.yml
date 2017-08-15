@@ -102,13 +102,6 @@ jobs:
           command: |
             set +o pipefail
             docker load -i /caches/alpine-orangeapi.tar | true
-      - run:
-          name: Show docker images & Set tag to gcloud docker images
-          command: |
-            set +o pipefail
-            _v=$(git describe --always --tags)
-            version=${_v#*v}            
-            docker tag "orangesys/alpine-orangeapi:${version}" "asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${version}"
             docker images
       - run:
           name: Push docker hub and gcloud
