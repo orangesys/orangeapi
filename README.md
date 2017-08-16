@@ -3,12 +3,13 @@
 [![](https://images.microbadger.com/badges/version/orangesys/alpine-orangeapi.svg)](https://microbadger.com/images/orangesys/alpine-orangeapi "Get your own version badge on microbadger.com")
 
 # orangesys
+
 ornagesys api
 
 # prerequisites
 
 - Kubernetes 1.6
-- Helm Tiller server
+- Deploy helm Tiller server 2.5.x on kubernetes
 - [Wheel](https://github.com/appscode/wheel)
 
 # set environment value with run docker
