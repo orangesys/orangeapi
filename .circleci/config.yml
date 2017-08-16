@@ -113,10 +113,13 @@ jobs:
             gcloud config set project $PROJECT_NAME
             gcloud --quiet config set container/cluster $CLUSTER_NAME
             gcloud --quiet container clusters get-credentials $CLUSTER_NAME
-            kubectl get pods
             ./scripts/push-container-images.sh
             curl -X POST https://hooks.microbadger.com/images/orangesys/alpine-orangeapi/_24B4d4BBsQhsH6Av_nH1ZKsl2s=
-
+      - run:
+          name: Deploy to GKE
+          command: |
+            ./scripts/deploy.sh
+            curl -s -S -X POST --data-urlencode "payload={'channel': '#ops', 'text': ':earth_asia: :fire: release $CIRCLE_PROJECT_REPONAME (TAG $CIRCLE_TAG) to GKE completed (build $CIRCLE_BUILD_NUM)' }" $SLACK_OPS >/dev/null
 workflows:
   version: 2
   build-and-deploy:
