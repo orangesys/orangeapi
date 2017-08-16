@@ -77,7 +77,8 @@ jobs:
       - image: google/cloud-sdk
     working_directory: ~/orangeapi
     environment:
-      PROJECT_NAME: orangesys
+      PROJECT_NAME: saas-orangesys-io
+      CLUSTER_NAME: orangesys-io
       CLOUDSDK_COMPUTE_ZONE: asia-northeast1-c
       ORG_PATH: "github.com/orangesys"
       REPO_PATH: "${ORG_PATH}/orangeapi"
@@ -110,6 +111,9 @@ jobs:
             echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/account-auth.json
             gcloud auth activate-service-account --key-file ${HOME}/account-auth.json
             gcloud config set project $PROJECT_NAME
+            gcloud --quiet config set container/cluster $CLUSTER_NAME
+            gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+            kubectl get pods
             ./scripts/push-container-images.sh
             curl -X POST https://hooks.microbadger.com/images/orangesys/alpine-orangeapi/_24B4d4BBsQhsH6Av_nH1ZKsl2s=
 
