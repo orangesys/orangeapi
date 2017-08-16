@@ -106,9 +106,12 @@ jobs:
       - run:
           name: Push docker hub and gcloud
           command: |
-            set +o pipefail
             docker login -u $DOCKER_USER -p $DOCKER_PASS
+            echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/account-auth.json
+            gcloud auth activate-service-account --key-file ${HOME}/account-auth.json
+            gcloud config set project $PROJECT_NAME
             ./scripts/push-container-images.sh
+            curl -X POST https://hooks.microbadger.com/images/orangesys/alpine-orangeapi/_24B4d4BBsQhsH6Av_nH1ZKsl2s=
 
 workflows:
   version: 2

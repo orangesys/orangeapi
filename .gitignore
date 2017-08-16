@@ -21,3 +21,4 @@ vendor/
 .env
 grafana*
 influxdb*
+orangeapi.toml
