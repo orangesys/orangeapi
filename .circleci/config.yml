@@ -33,6 +33,10 @@ jobs:
             curl https://glide.sh/get | sh
             glide install
       - run:
+          name: unit test
+          command: |
+            go test -v ./pkg/...
+      - run:
           command: make build
       - run:
           command: |
