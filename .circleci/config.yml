@@ -32,11 +32,20 @@ jobs:
           command: |
             curl https://glide.sh/get | sh
             glide install
+      - run: 
+          name: check gofmt
+          command: |
+            test -z "$(gofmt -s -l ./pkg | tee /dev/stderr)"
+      - run:
+          name: check go vet
+          command: |
+            test -z "$(go vet ./pkg/... | tee /dev/stderr)"
       - run:
           name: unit test
           command: |
             go test -v ./pkg/...
       - run:
+          name: building binaries
           command: make build
       - run:
           command: |
