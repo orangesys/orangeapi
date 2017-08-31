@@ -38,27 +38,3 @@ func (f *FirebaseConfiguration) SaveToken() error {
 	}
 	return nil
 }
-
-//func main() {
-//    config, err := config.LoadFirebaseConfig()
-//    if err != nil {
-//        fmt.Println(err)
-//	os.Exit(1)
-//    }
-//    user := FirebaseConfiguration{
-//	Config: config,
-//	UUID: "iGzNX6QzfudVlwKtR8CQCj0itIU2",
-//	ConsumerID: "test",
-//	Token: "testtest",
-//    }
-//    err = user.CheckUser()
-//    if err !=nil {
-//        fmt.Println(err)
-//	os.Exit(1)
-//    }
-//    err = user.SaveToken()
-//    if err !=nil {
-//        fmt.Println(err)
-//	os.Exit(2)
-//    }
-//}

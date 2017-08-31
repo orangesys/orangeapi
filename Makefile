@@ -6,11 +6,10 @@ WARN_COLOR=\033[33;01m
 IMPORT_PATH := github.com/orangesys/orangeapi
 PKG_SRC := $(IMPORT_PATH)/cmd/orangeapi
 
-VERSION := $(shell git describe --always --tags)
-REVISION := $(shell git rev-parse --short HEAD)
-BUILDTIME := $(shell date '+%Y/%m/%d %H:%M:%S %Z')
-GOVERSION := $(subst go version ,,$(shell go version))
+# Space separated patterns of packages to skip in list, test, format.
+IGNORED_PACKAGES := /vendor/
 
+.PHONY: all clean deps build 
 
 BINARYDIR := bin
 BINARY := orangeapi
@@ -47,25 +46,15 @@ else
 	rm ./glide.zip
 endif
 
-.PHONY: build
+all: clean deps build
+
 build:
 	@echo "$(OK_COLOR)==> Building... $(NO_COLOR)"
 	@/bin/sh -c "PKG_SRC=$(PKG_SRC) VERSION=${VERSION} ./scripts/build.sh"
 
-.PHONY: clean
 clean:
 	rm -fr $(BINARYDIR)
 
-.PHONY: deps
 deps: $(BINARYDIR)/$(GLIDE)
 	$(BINARYDIR)/$(GLIDE) install
 
-.PHONY: image
-image:
-	docker build --tag "orangesys/alpine-orangeapi:$(VERSION)" .
-
-.PHONY: deploy
-deploy:
-	docker tag "orangesys/alpine-orangeapi:$(VERSION)" "asia.gcr.io/saas-orangesys-io/alpine-orangeapi:$(VERSION)"
-	docker login -e $DOCKER_EMAIL -u _json_key -p "$(cat ${HOME}/account-auth.json)" https://asia.gcr.io
-	docker push asia.gcr.io/saas-orangesys-io/alpine-orangeapi:${_tag}
