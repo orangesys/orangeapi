@@ -58,3 +58,7 @@ clean:
 deps: $(BINARYDIR)/$(GLIDE)
 	$(BINARYDIR)/$(GLIDE) install
 
+test:
+	gofmt -s -l ./pkg
+	go vet ./pkg/...
+	go test -v ./pkg/...
