@@ -7,7 +7,7 @@ rm -f dist/orangesys*
 
 # Check if VERSION variable set and not empty, otherwise set to default value
 if [ -z "$VERSION" ]; then
-  VERSION=$(git describe --always --tags|sed 's/^v//')
+  VERSION=$(git describe --always --tags)
 fi
 echo "Building application version $VERSION"
 

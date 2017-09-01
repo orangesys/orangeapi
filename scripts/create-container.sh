@@ -2,7 +2,7 @@
 
 set -ex
 
-version=$(git describe --always --tags|sed 's/^v//')
+version=$(git describe --always --tags)
 docker build --tag "orangesys/alpine-orangeapi:${version}" .
 docker images
 mkdir -p /caches
