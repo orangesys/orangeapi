@@ -1,8 +1,0 @@
-package: github.com/orangesys/orangeapi
-import:
-- package: github.com/kelseyhightower/envconfig
-- package: github.com/pkg/errors
-- package: github.com/labstack/echo
-- package: github.com/labstack/echo/middleware
-- package: github.com/JustinTulloss/firebase
-- package: github.com/dgrijalva/jwt-go

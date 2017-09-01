@@ -29,23 +29,6 @@ DOCKER_IMAGE := $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 
 .DEFAULT_GOAL := $(BINARYDIR)/$(BINARY)
 
-$(BINARYDIR)/$(GLIDE):
-ifeq ($(shell uname),Darwin)
-	curl -fL https://github.com/Masterminds/glide/releases/download/v$(GLIDE_VERSION)/glide-v$(GLIDE_VERSION)-darwin-amd64.zip -o glide.zip
-	unzip glide.zip
-	if [ ! -d $(BINARYDIR) ]; then mkdir $(BINARYDIR); fi
-	mv ./darwin-amd64/glide $(BINARYDIR)/$(GLIDE)
-	rm -fr ./darwin-amd64
-	rm ./glide.zip
-else
-	curl -fL https://github.com/Masterminds/glide/releases/download/v$(GLIDE_VERSION)/glide-v$(GLIDE_VERSION)-linux-amd64.zip -o glide.zip
-	unzip glide.zip
-	if [ ! -d $(BINARYDIR) ]; then mkdir $(BINARYDIR); fi
-	mv ./linux-amd64/glide $(BINARYDIR)/$(GLIDE)
-	rm -fr ./linux-amd64
-	rm ./glide.zip
-endif
-
 all: clean deps build
 
 build:
@@ -55,10 +38,14 @@ build:
 clean:
 	rm -fr $(BINARYDIR)
 
-deps: $(BINARYDIR)/$(GLIDE)
-	$(BINARYDIR)/$(GLIDE) install
+deps: 
+	@echo "$(OK_COLOR)==> Installing dependencies$(NO_COLOR)"
+	@go get -u github.com/golang/dep/cmd/dep
+	@go get -u github.com/golang/lint/golint
+	@go get -u github.com/DATA-DOG/godog/cmd/godog
+	@dep ensure
 
 test:
-	gofmt -s -l ./pkg
-	go vet ./pkg/...
-	go test -v ./pkg/...
+	@test -z "$(gofmt -s -l ./pkg | tee /dev/stderr)"
+	@test -z "$(go vet ./pkg/... | tee /dev/stderr)"
+	@go test -v ./pkg/...

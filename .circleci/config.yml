@@ -30,20 +30,11 @@ jobs:
       - run:
           name: download dependencies
           command: |
-            curl https://glide.sh/get | sh
-            glide install
+            make deps
       - run: 
-          name: check gofmt
-          command: |
-            test -z "$(gofmt -s -l ./pkg | tee /dev/stderr)"
-      - run:
-          name: check go vet
-          command: |
-            test -z "$(go vet ./pkg/... | tee /dev/stderr)"
-      - run:
           name: unit test
           command: |
-            go test -v ./pkg/...
+            make test
       - run:
           name: building binaries
           command: make build
