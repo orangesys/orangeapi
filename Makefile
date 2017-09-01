@@ -36,7 +36,7 @@ build:
 	@/bin/sh -c "PKG_SRC=$(PKG_SRC) VERSION=${VERSION} ./scripts/build.sh"
 
 clean:
-	rm -fr $(BINARYDIR)
+	@rm -fr $(BINARYDIR)
 
 deps: 
 	@echo "$(OK_COLOR)==> Installing dependencies$(NO_COLOR)"
