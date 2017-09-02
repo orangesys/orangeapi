@@ -3,17 +3,27 @@ package wheel
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
 type CreateInfluxDB struct {
-	Name      string
-	Retention string
-	PVCSize   string
-	ChartURL  string `json:"chart_url"`
-	Values    struct {
-		Raw string `json:"raw"`
-	} `json:"values"`
+	Name     string
+	ChartURL string `json:"chart_url"`
+	Values   Values `json:"values,omitempty"`
+}
+
+type Values struct {
+	Values string `json:"raw"`
+}
+
+type Raw struct {
+	Persistence     Persistence `json:"persistence"`
+	RetentionPolicy string      `json:"retentionPolicy"`
+}
+
+type Persistence struct {
+	Size string `json:"size"`
 }
 
 type CreateGrafana struct {
@@ -22,16 +32,33 @@ type CreateGrafana struct {
 }
 
 // WheelInfluxdb create influxdb with wheel
-func (c *CreateInfluxDB) WheelInfluxdb() error {
+func (c *CreateInfluxDB) WheelInfluxdb(size, rp string) error {
 	releaseURL := "http://wheel.kube-system:9855/tiller/v2/releases/" + c.Name + "-i/json"
-	c.ChartURL = "https://github.com/orangesys/charts/raw/master/docs/influxdb-0.1.13.tgz"
-	c.Values.Raw = "{\"retentionPolicy\":" + c.Retention + ",\"persistence.size\":" + c.PVCSize + "}"
-	b := new(bytes.Buffer)
-	json.NewEncoder(b).Encode(c)
-	_, err := http.Post(releaseURL, "application/json; charset=utf-8", b)
+
+	p := Persistence{Size: size}
+	r := Raw{Persistence: p, RetentionPolicy: rp}
+	rb, _ := json.Marshal(r)
+	c.Values.Values = string(rb)
+
+	data, err := json.Marshal(c)
 	if err != nil {
+		fmt.Println("json err:", err)
+	}
+	fmt.Println(string(data))
+
+	req, err := http.NewRequest("POST", releaseURL, bytes.NewBuffer(data))
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println(err.Error())
 		return err
 	}
+
 	return nil
 }
 

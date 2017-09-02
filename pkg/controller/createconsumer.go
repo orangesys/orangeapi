@@ -121,11 +121,10 @@ func CreateOrangesys(name, retention, pvcsize string) (string, error) {
 	key := name + "-i-influxdb"
 
 	i := wheel.CreateInfluxDB{
-		Name:      name,
-		Retention: retention,
-		PVCSize:   pvcsize,
+		Name:     name,
+		ChartURL: "https://github.com/orangesys/charts/raw/master/docs/influxdb-0.1.13.tgz",
 	}
-	if err := i.WheelInfluxdb(); err != nil {
+	if err := i.WheelInfluxdb(retention, pvcsize); err != nil {
 		return "", fmt.Errorf("%s %s", "can not deploy influxdb with", name)
 	}
 
