@@ -32,11 +32,11 @@ type CreateGrafana struct {
 }
 
 // WheelInfluxdb create influxdb with wheel
-func (c *CreateInfluxDB) WheelInfluxdb(size, rp string) error {
+func (c *CreateInfluxDB) WheelInfluxdb(retention, pvcsize string) error {
 	releaseURL := "http://wheel.kube-system:9855/tiller/v2/releases/" + c.Name + "-i/json"
 
-	p := Persistence{Size: size}
-	r := Raw{Persistence: p, RetentionPolicy: rp}
+	p := Persistence{Size: pvcsize}
+	r := Raw{Persistence: p, RetentionPolicy: retention}
 	rb, _ := json.Marshal(r)
 	c.Values.Values = string(rb)
 
