@@ -1,9 +1,15 @@
 steps:
-- id: 'make-dep'
-  name: 'golang:1.8.3'
-  args: ['make', 'deps']
+- id: 'dep'
+  name: 'gcr.io/cloud-builders/go'
+  args: ['get', '-u', 'github.com/golang/dep/cmd/dep']
+
+- id: 'dep-ensure'
+  name: 'gcr.io/cloud-builders/go'
+  entrypoint: 'dep'
+  args: ['ensure']
+  waitFor: ['dep']
 
 - id: 'build-tag'
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/orangeapi', '.']
-  waitFor: ['make-dep']
+  waitFor: ['dep', 'dep-ensure']
