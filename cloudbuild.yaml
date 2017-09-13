@@ -6,4 +6,4 @@ steps:
 - id: 'build-tag'
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/orangeapi', '.']
-  waitFor: ['ensure']
+  waitFor: ['dep-ensure']
