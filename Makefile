@@ -29,22 +29,6 @@ DOCKER_IMAGE := $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 
 .DEFAULT_GOAL := $(BINARYDIR)/$(BINARY)
 
-$(BINARYDIR)/$(GLIDE):
-	if [ ! -d $(BINARYDIR) ]; then mkdir $(BINARYDIR); fi
-ifeq ($(shell uname),Darwin)
-	curl -fL https://github.com/Masterminds/glide/releases/download/$(GLIDE_VERSION)/glide-$(GLIDE_VERSION)-darwin-amd64.zip -o glide.zip
-	unzip glide.zip
-	mv ./darwin-amd64/glide $(BINARYDIR)/$(GLIDE)
-	rm -fr ./darwin-amd64
-	rm ./glide.zip
-else
-	curl -fL https://github.com/Masterminds/glide/releases/download/$(GLIDE_VERSION)/glide-$(GLIDE_VERSION)-linux-amd64.zip -o glide.zip
-	unzip glide.zip
-	mv ./linux-amd64/glide $(BINARYDIR)/$(GLIDE)
-	rm -fr ./linux-amd64
-	rm ./glide.zip
-endif
-
 all: clean deps build
 
 build:
@@ -56,8 +40,8 @@ clean:
 
 deps: 
 	@echo "$(OK_COLOR)==> Installing dependencies$(NO_COLOR)"
-	$(BINARYDIR)/$(GLIDE)
-		$(BINARYDIR)/$(GLIDE) install
+	@curl https://glide.sh/get | sh
+	@glide install
 
 test:
 	@test -z "$(gofmt -s -l ./pkg | tee /dev/stderr)"
