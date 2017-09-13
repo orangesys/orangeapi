@@ -1,0 +1,24 @@
+package: github.com/orangesys/orangeapi
+import:
+- package: github.com/JustinTulloss/firebase
+- package: github.com/dghubble/sling
+  version: ^1.1.0
+- package: github.com/dgrijalva/jwt-go
+  version: ^3.0.0
+- package: github.com/influxdata/influxdb
+  version: ^1.3.5
+  subpackages:
+  - client/v2
+- package: github.com/kelseyhightower/envconfig
+  version: ^1.3.0
+- package: github.com/labstack/echo
+  version: ^3.2.3
+  subpackages:
+  - middleware
+- package: github.com/pkg/errors
+  version: ^0.8.0
+- package: github.com/rs/zerolog
+  version: ^1.3.0
+  subpackages:
+  - log
+- package: github.com/spf13/cobra
