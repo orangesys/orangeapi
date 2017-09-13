@@ -1,7 +1,7 @@
 FROM golang:1.8.3 as compile-stage
 WORKDIR /go/src/github.com/orangesys/orangeapi
 COPY . .
-ENTRYPOINT ["make", "build"]
+RUN make build
 
 FROM alpine:3.6
 MAINTAINER gavin zhou <gavin.zhou@gmail.com>
