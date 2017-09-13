@@ -1,11 +1,12 @@
 steps:
 - id: 'dep'
   name: 'gcr.io/cloud-builders/go'
+  env: ['GOPATH=.']
   args: ['get', '-u', 'github.com/golang/dep/cmd/dep']
 
 - id: 'dep-ensure'
   name: 'gcr.io/cloud-builders/go'
-  entrypoint: 'dep'
+  entrypoint: '/go/bin/dep'
   args: ['ensure']
   waitFor: ['dep']
 
