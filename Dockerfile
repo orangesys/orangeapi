@@ -1,4 +1,5 @@
 FROM golang:1.8.3-onbuild as compile-stage 
+ENTRYPOINT ["make", "build"]
 
 FROM alpine:3.6
 MAINTAINER gavin zhou <gavin.zhou@gmail.com>
