@@ -1,6 +1,6 @@
 steps:
 - id: 'dep-ensure'
-  name: 'gcr.io/saas-orangesys-io/dep:38bc77a0-226e-4f42-8172-e0756bf6dfd4'
+  name: 'gcr.io/saas-orangesys-io/dep:82b7fa94-a585-45a0-9f65-09e21393bc7a'
   args: ['ensure']
 
 - id: 'build-tag'
