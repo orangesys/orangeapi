@@ -1,0 +1,8 @@
+steps:
+- id: 'make-dep'
+  name: 'golang:1.8.3'
+  args: ['make', 'dep']  
+- id: 'build-tag'
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', ,'gcr.io/$PROJECT_ID/alpine-orangeapi:$TAG_NAME']
+  waitFor: ['-']
