@@ -5,7 +5,7 @@ RUN make build
 
 FROM alpine:3.6
 MAINTAINER gavin zhou <gavin.zhou@gmail.com>
-COPY --from=compile-stage dist/orangeapi_linux-amd64 /
+COPY --from=compile-stage /go/src/github.com/orangesys/orangeapi/dist/orangeapi_linux-amd64 /
 
 RUN echo "==> Installing ..." \
   && apk add --no-cache ca-certificates
