@@ -40,7 +40,7 @@ clean:
 
 deps: 
 	@echo "$(OK_COLOR)==> Installing dependencies$(NO_COLOR)"
-	@curl https://glide.sh/get | sh
+	@go get -u github.com/Masterminds/glide
 	@glide install
 
 test:
