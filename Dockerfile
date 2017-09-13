@@ -1,9 +1,15 @@
-FROM alpine:3.6
-MAINTAINER gavin zhou <gavin.zhou@gmail.com>
-COPY dist/orangeapi_linux-amd64 /
+FROM golang:1.8.3 as compile-stage
+WORKDIR /go/src/github.com/orangesys/orangeapi
+COPY . .
+RUN make build
 
-RUN echo "==> Installing ..." \
-  && apk add --no-cache ca-certificates
+FROM alpine:latest as certs
+RUN apk --update add ca-certificates
+
+FROM scratch
+MAINTAINER gavin zhou <gavin.zhou@gmail.com>
+COPY --from=compile-stage /go/src/github.com/orangesys/orangeapi/dist/orangeapi_linux-amd64 /
+COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 EXPOSE 1323
