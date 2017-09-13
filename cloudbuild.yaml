@@ -5,5 +5,5 @@ steps:
 
 - id: 'build-tag'
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/orangeapi:$TAG_NAME', '.']
+  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/orangeapi', '.']
   waitFor: ['make-dep']
