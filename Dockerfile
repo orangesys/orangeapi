@@ -1,14 +1,12 @@
-FROM golang:1.8.3 as compile-stage
+FROM golang:1.8.3-alpine3.6 AS compile-stage
 WORKDIR /go/src/github.com/orangesys/orangeapi
 COPY . .
 RUN make build
 
-FROM alpine:3.6
+FROM scratch
 MAINTAINER gavin zhou <gavin.zhou@gmail.com>
 COPY --from=compile-stage /go/src/github.com/orangesys/orangeapi/dist/orangeapi_linux-amd64 /
-
-RUN echo "==> Installing ..." \
-  && apk add --no-cache ca-certificates
+COPY --from=compile-stage /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 EXPOSE 1323
