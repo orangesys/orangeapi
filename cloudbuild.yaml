@@ -1,8 +1,7 @@
 steps:
 - id: 'dep-ensure'
   name: 'gcr.io/cloud-builders/glide'
-  env: ['GOPATH=.']
-  args: ['install']
+  args: ['install', '.']
 
 - id: 'build-tag'
   name: 'gcr.io/cloud-builders/docker'
