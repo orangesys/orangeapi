@@ -52,7 +52,7 @@ jobs:
     steps:
       - *attach_workspace
       - *load_code
-      - setup_remote_docker
+      - setup_remote_docker:
           version: 17.07.0-ce
       - restore_cache:
           keys:
@@ -89,7 +89,7 @@ jobs:
       REPO_PATH: "${ORG_PATH}/orangeapi"
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
           version: 17.07.0-ce
       - restore_cache:
           keys:
