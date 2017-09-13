@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -xe
 
 # Get rid of existing binaries
 rm -f dist/orangesys*
