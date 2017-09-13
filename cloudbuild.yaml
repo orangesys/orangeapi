@@ -1,16 +1,9 @@
 steps:
-- id: 'dep'
-  name: 'gcr.io/cloud-builders/go'
-  env: ['GOPATH=.']
-  args: ['get', '-u', 'github.com/golang/dep/cmd/dep']
-
 - id: 'dep-ensure'
-  name: 'gcr.io/cloud-builders/go'
-  entrypoint: '/go/bin/dep'
+  name: 'gcr.io/saas-orangesys-io/dep'
   args: ['ensure']
-  waitFor: ['dep']
 
 - id: 'build-tag'
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/orangeapi', '.']
-  waitFor: ['dep', 'dep-ensure']
+  waitFor: ['ensure']
