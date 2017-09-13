@@ -1,7 +1,7 @@
 steps:
 - id: 'make-dep'
   name: 'golang:1.8.3'
-  args: ['make', 'dep']
+  args: ['make', 'deps']
 
 - id: 'build-tag'
   name: 'gcr.io/cloud-builders/docker'
