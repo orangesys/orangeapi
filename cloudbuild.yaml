@@ -1,7 +1,8 @@
 steps:
 - id: 'dep-ensure'
   name: 'gcr.io/cloud-builders/glide'
-  args: ['install', '.']
+  env: ['PROJECT_ROOT=github.com/orangesys/orangeapi']
+  args: ['install']
 
 - id: 'build-tag'
   name: 'gcr.io/cloud-builders/docker'
