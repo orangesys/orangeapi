@@ -1,4 +1,4 @@
-FROM golang:1.8.3-onbuild as compile-stage 
+FROM golang:1.8.3 as compile-stage 
 WORKDIR /go/src/github.com/orangesys/orangeapi
 COPY . .
 RUN go get -u github.com/golang/dep/cmd/dep \
