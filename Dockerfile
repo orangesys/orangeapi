@@ -1,4 +1,6 @@
-FROM golang:1.8.3-onbuild as compile-stage 
+FROM golang:1.8.3 as compile-stage
+WORKDIR /go/src/github.com/orangesys/orangeapi
+COPY . .
 ENTRYPOINT ["make", "build"]
 
 FROM alpine:3.6
