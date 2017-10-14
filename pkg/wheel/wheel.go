@@ -7,25 +7,30 @@ import (
 	"net/http"
 )
 
+// CreateInfluxDB is init influxdb charts params with wheel
 type CreateInfluxDB struct {
 	Name     string
 	ChartURL string `json:"chart_url"`
 	Values   Values `json:"values,omitempty"`
 }
 
+// Values init
 type Values struct {
 	Values string `json:"raw"`
 }
 
+// Raw init tsdb persistence and retention policy
 type Raw struct {
 	Persistence     Persistence `json:"persistence"`
 	RetentionPolicy string      `json:"retentionPolicy"`
 }
 
+// Persistence init disk size
 type Persistence struct {
 	Size string `json:"size"`
 }
 
+// CreateGrafana is init grafana charts params with wheel
 type CreateGrafana struct {
 	Name     string
 	ChartURL string `json:"chart_url"`
