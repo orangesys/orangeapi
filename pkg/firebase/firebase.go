@@ -2,12 +2,12 @@ package firebase
 
 import (
 	"fmt"
-	_ "os"
 
 	"github.com/JustinTulloss/firebase"
 	"github.com/orangesys/orangeapi/pkg/config"
 )
 
+// FirebaseConfiguration init firebase configuration struct
 type FirebaseConfiguration struct {
 	Config     *config.FirebaseConfiguration
 	UUID       string
@@ -15,6 +15,7 @@ type FirebaseConfiguration struct {
 	Token      string
 }
 
+// CheckUser checkout user is exist in firebase
 func (f *FirebaseConfiguration) CheckUser() error {
 	c := firebase.NewClient(f.Config.FirebaseURL+"/users/"+f.UUID, f.Config.FirebaseAuth, nil)
 	var r map[string]interface{}
@@ -28,6 +29,7 @@ func (f *FirebaseConfiguration) CheckUser() error {
 	return nil
 }
 
+// SaveToken save user token string to firebase
 func (f *FirebaseConfiguration) SaveToken() error {
 	c := firebase.NewClient(f.Config.FirebaseURL+"/users/"+f.UUID, f.Config.FirebaseAuth, nil)
 	tf := map[string]interface{}{"consumerId": f.ConsumerID, "token": f.Token}
