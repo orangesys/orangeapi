@@ -13,7 +13,15 @@ func TestConsumer_CreateToken(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-	// TODO: Add test cases.
+		{
+			"name",
+			fields{
+				"a36c3049b36249a3c9f8891cb127243c",
+				"e71829c351aa4242c2719cbfbe671c09",
+			},
+			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhMzZjMzA0OWIzNjI0OWEzYzlmODg5MWNiMTI3MjQzYyJ9.U8dOyd1978lmbWNk7gXHf7krDTjYKZanrVpayA0Lhug",
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -21,11 +29,7 @@ func TestConsumer_CreateToken(t *testing.T) {
 				Iss:    tt.fields.Iss,
 				Secret: tt.fields.Secret,
 			}
-			got, err := c.CreateToken()
-			if (err != nil) != tt.wantErr {
-				t.Errorf("Consumer.CreateToken() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
+			got, _ := c.CreateToken()
 			if got != tt.want {
 				t.Errorf("Consumer.CreateToken() = %v, want %v", got, tt.want)
 			}
