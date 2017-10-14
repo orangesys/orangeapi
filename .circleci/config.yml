@@ -39,6 +39,10 @@ jobs:
           name: building binaries
           command: make build
       - run:
+          name: push codecov
+          command: |
+            bash <(curl -s https://codecov.io/bash)
+      - run:
           command: |
             mkdir -p /tmp/workspace/orangeapi
             mv * .[!.]* /tmp/workspace/orangeapi/

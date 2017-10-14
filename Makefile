@@ -17,6 +17,9 @@ LINUX_AMD64_SUFFIX := _linux-amd64
 
 SOURCEDIR := .
 SOURCES := $(shell find $(SOURCEDIR) -name '*.go' -type f)
+SOURCE_FILES :=./pkg/...
+
+TEST_PATTERN?=.
 
 LDFLAGS := -ldflags="-w -X \"main.Version=$(VERSION)\" -X \"main.Revision=$(REVISION)\" -X \"main.BuildTime=$(BUILDTIME)\" -X \"main.GoVersion=$(GOVERSION)\""
 
@@ -41,9 +44,14 @@ clean:
 deps: 
 	@echo "$(OK_COLOR)==> Installing dependencies$(NO_COLOR)"
 	@go get -u github.com/Masterminds/glide
+	@go get -u github.com/pierrre/gotestcover
 	@glide install
 
 test:
 	@test -z "$(gofmt -s -l ./pkg | tee /dev/stderr)"
 	@test -z "$(go vet ./pkg/... | tee /dev/stderr)"
-	@go test -v ./pkg/...
+	@gotestcover -covermode=atomic -coverprofile=coverage.txt $(SOURCE_FILES) -run $(TEST_PATTERN) -timeout=2m
+
+# Run all the tests and opens the coverage report
+cover: test
+	@go tool cover -html=coverage.txt
