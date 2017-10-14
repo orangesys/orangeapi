@@ -1,9 +1,0 @@
-mode: atomic
-github.com/orangesys/orangeapi/pkg/firebase/firebase.go:19.51,23.16 4 0
-github.com/orangesys/orangeapi/pkg/firebase/firebase.go:26.2,26.14 1 0
-github.com/orangesys/orangeapi/pkg/firebase/firebase.go:29.2,29.12 1 0
-github.com/orangesys/orangeapi/pkg/firebase/firebase.go:23.16,25.3 1 0
-github.com/orangesys/orangeapi/pkg/firebase/firebase.go:26.14,28.3 1 0
-github.com/orangesys/orangeapi/pkg/firebase/firebase.go:33.51,38.16 4 0
-github.com/orangesys/orangeapi/pkg/firebase/firebase.go:41.2,41.12 1 0
-github.com/orangesys/orangeapi/pkg/firebase/firebase.go:38.16,40.3 1 0
