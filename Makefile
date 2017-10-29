@@ -55,3 +55,7 @@ test:
 # Run all the tests and opens the coverage report
 cover: test
 	@go tool cover -html=coverage.txt
+
+bazel: deps
+	@bazel run //:gazelle
+	@bazel build //cmd/orangeapi
