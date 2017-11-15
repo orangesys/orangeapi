@@ -3,7 +3,7 @@ version: 2
 references:
   container_config: &container_config
     docker:
-      - image: golang:1.8.3
+      - image: golang:1.9.2
     working_directory: /go/src/github.com/orangesys/orangeapi
 
     workspace_root: &workspace_root
@@ -31,7 +31,7 @@ jobs:
           name: download dependencies
           command: |
             make deps
-      - run: 
+      - run:
           name: unit test
           command: |
             make test
@@ -127,13 +127,13 @@ workflows:
       - build_orangeapi:
           filters:
             tags:
-              only: /^v[0-9]+(\.[0-9]+)*/      
+              only: /^v[0-9]+(\.[0-9]+)*/
       - build_container:
           requires:
             - build_orangeapi
           filters:
             tags:
-              only: /^v[0-9]+(\.[0-9]+)*/            
+              only: /^v[0-9]+(\.[0-9]+)*/
       - deploy:
           requires:
             - build_orangeapi
