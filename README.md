@@ -2,6 +2,7 @@
 [![CircleCI](https://circleci.com/gh/orangesys/orangeapi.svg?style=svg)](https://circleci.com/gh/orangesys/orangeapi)
 [![](https://images.microbadger.com/badges/image/orangesys/alpine-orangeapi.svg)](https://microbadger.com/images/orangesys/alpine-orangeapi "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/orangesys/alpine-orangeapi.svg)](https://microbadger.com/images/orangesys/alpine-orangeapi "Get your own version badge on microbadger.com")
+[![codebeat badge](https://codebeat.co/badges/7c11d70d-64fc-467d-b737-19bf708f3c42)](https://codebeat.co/projects/github-com-orangesys-orangeapi-master)
 
 # orangesys
 
