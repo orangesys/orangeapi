@@ -7,7 +7,7 @@ FROM alpine:latest as certs
 RUN apk --update add ca-certificates
 
 FROM scratch
-LABEL maintainer "gavin zhou <gavin.zhou@gmail.com>""
+LABEL maintainer "gavin zhou <gavin.zhou@gmail.com>"
 COPY --from=compile-stage /go/src/github.com/orangesys/orangeapi/dist/orangeapi_linux-amd64 /
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
