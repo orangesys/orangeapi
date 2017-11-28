@@ -20,6 +20,10 @@ jobs:
             sudo apt-get install bazel
             bazel info release
       - run:
+          name: Run gazelle
+          command: |
+            bazel run :gazelle
+      - run:
           name: Build binary
           command: |
             bazel cmd/orangeapi:orangeapi
