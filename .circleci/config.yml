@@ -32,6 +32,10 @@ jobs:
           name: Build binary
           command: |
             bazel build cmd/orangeapi:orangeapi
+      - run:
+          name: Build image
+          command: |
+            bazel build cmd/orangeapi:image
       - save_cache:
           key: v1-{{ .Branch }}
           paths:
