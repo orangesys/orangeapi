@@ -1,0 +1,21 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "k8s.go",
+        "kubernetes.go",
+    ],
+    importpath = "github.com/orangesys/orangeapi/pkg/k8s",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "k8s_test.go",
+        "kubernetes_test.go",
+    ],
+    importpath = "github.com/orangesys/orangeapi/pkg/k8s",
+    library = ":go_default_library",
+)

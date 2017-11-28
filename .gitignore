@@ -21,3 +21,4 @@ coverage.txt
 grafana*
 influxdb*
 orangeapi.toml
+bazel-*

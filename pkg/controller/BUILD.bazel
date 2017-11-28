@@ -1,0 +1,19 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "checkconsumer.go",
+        "createconsumer.go",
+    ],
+    importpath = "github.com/orangesys/orangeapi/pkg/controller",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//pkg/common:go_default_library",
+        "//pkg/config:go_default_library",
+        "//pkg/firebase:go_default_library",
+        "//pkg/k8s:go_default_library",
+        "//pkg/kong:go_default_library",
+        "//pkg/wheel:go_default_library",
+    ],
+)

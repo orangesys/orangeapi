@@ -1,0 +1,22 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "api.go",
+        "basic_auth.go",
+        "consumer.go",
+        "correlation_id_plugin.go",
+        "jwt.go",
+        "kong.go",
+        "oauth2_plugin.go",
+        "plugin.go",
+        "request_transformer_plugin.go",
+    ],
+    importpath = "github.com/orangesys/orangeapi/pkg/kong",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//pkg/config:go_default_library",
+        "@com_github_dghubble_sling//:go_default_library",
+    ],
+)
