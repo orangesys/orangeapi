@@ -30,7 +30,7 @@ jobs:
       - save_cache:
         key: v1-{{ .Branch }}-{{ epoch }}
         paths:
-          - ~/.cache/bazel
+          - .cache/bazel
 
   # deploy:
   #   docker:
