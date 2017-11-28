@@ -3,24 +3,8 @@ version: 2
 references:
   container_config: &container_config
     docker:
-      - image: golang:1.9.2
-    working_directory: /go/src/github.com/orangesys/orangeapi
-
-    workspace_root: &workspace_root
-      /tmp/workspace
-
-    attach_workspace: &attach_workspace
-      attach_workspace:
-        at: *workspace_root
-
-    load_code: &load_code
-      run:
-        name: load code from workspace
-        command: |
-          # Move all files and dotfiles to current directory
-          mv /tmp/workspace/orangeapi/* /tmp/workspace/orangeapi/.[!.]* .
-    go_cache_key: &go_cache_key
-      key: dependency-go-{{ checksum "glide.lock" }}
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/containers_by_bazel
 
 jobs:
   build_orangeapi:
@@ -28,98 +12,57 @@ jobs:
     steps:
       - checkout
       - run:
-          name: download dependencies
+          name: Install bazel
           command: |
-            make deps
+            echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+            curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+            sudo apt-get update
+            sudo apt-get install bazel=0.7.0
+            bazel info release
       - run:
-          name: unit test
+          name: Build binary
           command: |
-            make test
-      - run:
-          name: building binaries
-          command: make build
-      - run:
-          name: push codecov
-          command: |
-            bash <(curl -s https://codecov.io/bash)
-      - run:
-          command: |
-            mkdir -p /tmp/workspace/orangeapi
-            mv * .[!.]* /tmp/workspace/orangeapi/
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - orangeapi
+            bazel cmd/orangeapi:orangeapi
 
-  build_container:
-    <<: *container_config
-    steps:
-      - *attach_workspace
-      - *load_code
-      - setup_remote_docker:
-          version: 17.07.0-ce
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
-          paths:
-            - /caches/alpine-orangeapi.tar
-      - run:
-          name: Install docker client
-          command: |
-            set -x
-            VER="17.07.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/edge/x86_64/docker-${VER}.tgz
-            tar -xz -C /tmp/ -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
-      - run:
-          name: Build orangeapi Docker images
-          command: |
-            set +o pipefail
-            ./scripts/create-container.sh
-      - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
-          paths:
-            - /caches/alpine-orangeapi.tar
-
-  deploy:
-    docker:
-      - image: google/cloud-sdk
-    working_directory: ~/orangeapi
-    environment:
-      PROJECT_NAME: saas-orangesys-io
-      CLUSTER_NAME: orangesys-io
-      CLOUDSDK_COMPUTE_ZONE: asia-northeast1-c
-      ORG_PATH: "github.com/orangesys"
-      REPO_PATH: "${ORG_PATH}/orangeapi"
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 17.07.0-ce
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
-          paths:
-            - /caches/alpine-orangeapi.tar
-      - run:
-          name: Install docker client
-          command: |
-            set -x
-            VER="17.07.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/edge/x86_64/docker-${VER}.tgz
-            tar -xz -C /tmp/ -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
-      - run:
-          name: Load Docker image layer cache
-          command: |
-            set +o pipefail
-            docker load -i /caches/alpine-orangeapi.tar | true
-            docker images
-      - run:
-          name: Push docker hub
-          command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push orangesys/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
-            curl -X POST https://hooks.microbadger.com/images/orangesys/alpine-orangeapi/_24B4d4BBsQhsH6Av_nH1ZKsl2s=
+  # deploy:
+  #   docker:
+  #     - image: google/cloud-sdk
+  #   working_directory: ~/orangeapi
+  #   environment:
+  #     PROJECT_NAME: saas-orangesys-io
+  #     CLUSTER_NAME: orangesys-io
+  #     CLOUDSDK_COMPUTE_ZONE: asia-northeast1-c
+  #     ORG_PATH: "github.com/orangesys"
+  #     REPO_PATH: "${ORG_PATH}/orangeapi"
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker:
+  #         version: 17.07.0-ce
+  #     - restore_cache:
+  #         keys:
+  #           - v1-{{ .Branch }}
+  #         paths:
+  #           - /caches/alpine-orangeapi.tar
+  #     - run:
+  #         name: Install docker client
+  #         command: |
+  #           set -x
+  #           VER="17.07.0-ce"
+  #           curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/edge/x86_64/docker-${VER}.tgz
+  #           tar -xz -C /tmp/ -f /tmp/docker-$VER.tgz
+  #           mv /tmp/docker/* /usr/bin
+  #     - run:
+  #         name: Load Docker image layer cache
+  #         command: |
+  #           set +o pipefail
+  #           docker load -i /caches/alpine-orangeapi.tar | true
+  #           docker images
+  #     - run:
+  #         name: Push docker hub
+  #         command: |
+  #           docker login -u $DOCKER_USER -p $DOCKER_PASS
+  #           docker push orangesys/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
+  #           curl -X POST https://hooks.microbadger.com/images/orangesys/alpine-orangeapi/_24B4d4BBsQhsH6Av_nH1ZKsl2s=
 workflows:
   version: 2
   build-and-deploy:
@@ -128,18 +71,18 @@ workflows:
           filters:
             tags:
               only: /^v[0-9]+(\.[0-9]+)*/
-      - build_container:
-          requires:
-            - build_orangeapi
-          filters:
-            tags:
-              only: /^v[0-9]+(\.[0-9]+)*/
-      - deploy:
-          requires:
-            - build_orangeapi
-            - build_container
-          filters:
-            tags:
-              only: /^v[0-9]+(\.[0-9]+)*/
-            branches:
-              ignore: /.*/
+      # - build_container:
+      #     requires:
+      #       - build_orangeapi
+      #     filters:
+      #       tags:
+      #         only: /^v[0-9]+(\.[0-9]+)*/
+      # - deploy:
+      #     requires:
+      #       - build_orangeapi
+      #       - build_container
+      #     filters:
+      #       tags:
+      #         only: /^v[0-9]+(\.[0-9]+)*/
+      #       branches:
+      #         ignore: /.*/
