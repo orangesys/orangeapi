@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Build binary
           command: |
-            bazel cmd/orangeapi:orangeapi
+            bazel build cmd/orangeapi:orangeapi
 
   # deploy:
   #   docker:
