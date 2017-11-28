@@ -131,16 +131,6 @@ go_repository(
 )
 
 # You *must* import the Go rules before setting up the go_image rules.
-git_repository(
-    name = "io_bazel_rules_go",
-    tag = "v0.3.0",
-    remote = "https://github.com/bazelbuild/rules_go.git",
-)
-
-load("@io_bazel_rules_go//go:def.bzl", "go_repositories")
-
-go_repositories()
-
 load(
     "@io_bazel_rules_docker//go:image.bzl",
     _go_image_repos = "repositories",
