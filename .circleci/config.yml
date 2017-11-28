@@ -12,7 +12,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: v1-{{ .Branch }}
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - ~/.cache
       - run:
           name: Install bazel
           command: |
