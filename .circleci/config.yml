@@ -28,7 +28,7 @@ jobs:
           command: |
             bazel build cmd/orangeapi:orangeapi
       - save_cache:
-        key: v1-{{ .Branch }}-{{ epoch }}
+        key: v1-{{ epoch }}
         paths:
           - .cache/bazel
 
