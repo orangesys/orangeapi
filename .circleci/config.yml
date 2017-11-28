@@ -27,6 +27,10 @@ jobs:
           name: Build binary
           command: |
             bazel build cmd/orangeapi:orangeapi
+      - save_cache:
+          key: v1-{{ .Branch }}
+          paths:
+            - ~/.cache
 
   # deploy:
   #   docker:
