@@ -20,16 +20,16 @@ go_library(
 
 go_binary(
     name = "orangeapi",
+    embed = [":go_default_library"],
     importpath = "github.com/orangesys/orangeapi/cmd/orangeapi",
-    library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
 
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 
-go_image(
-    name = "image",
-    importpath = "github.com/orangesys/orangeapi/cmd/orangeapi",
-    library = ":go_default_library",
-    visibility = ["//visibility:public"],
-)
+# go_image(
+#     name = "image",
+#     importpath = "github.com/orangesys/orangeapi/cmd/orangeapi",
+#     library = ":go_default_library",
+#     visibility = ["//visibility:public"],
+# )

@@ -1,7 +1,7 @@
-git_repository(
+http_archive(
     name = "io_bazel_rules_go",
-    remote = "https://github.com/bazelbuild/rules_go.git",
-    tag = "0.7.0",
+    sha256 = "4d8d6244320dd751590f9100cf39fd7a4b75cd901e1f3ffdfd6f048328883695",
+    url = "https://github.com/bazelbuild/rules_go/releases/download/0.9.0/rules_go-0.9.0.tar.gz",
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains", "go_repository")
@@ -10,27 +10,40 @@ go_rules_dependencies()
 
 go_register_toolchains()
 
+# You *must* import the Go rules before setting up the go_image rules.
+git_repository(
+    name = "io_bazel_rules_docker",
+    remote = "https://github.com/bazelbuild/rules_docker.git",
+    tag = "v0.3.0",
+)
+
+load(
+    "@io_bazel_rules_docker//container:container.bzl",
+    "container_pull",
+    container_repositories = "repositories",
+)
+load(
+    "@io_bazel_rules_docker//go:image.bzl",
+    _go_image_repos = "repositories",
+)
+
+_go_image_repos()
+
 go_repository(
     name = "com_github_spf13_cobra",
-    commit = "1be1d2841c773c01bee8289f55f7463b6e2c2539",
+    commit = "b95ab734e27d33e0d8fbabf71ca990568d4e2020",
     importpath = "github.com/spf13/cobra",
 )
 
 go_repository(
     name = "com_github_rs_zerolog",
-    commit = "1251b38a892a7049cc68c578448ee5313ba8caf8",
+    commit = "b53826c57a6a1d8833443ebeacf1cfb62b229c64",
     importpath = "github.com/rs/zerolog",
 )
 
 go_repository(
-    name = "com_github_pkg_errors",
-    commit = "f15c970de5b76fac0b59abb32d62c17cc7bed265",
-    importpath = "github.com/pkg/errors",
-)
-
-go_repository(
     name = "com_github_labstack_echo",
-    commit = "0473c51f1dbd83487effce00702571d19033a6e5",
+    commit = "b6040409eeceaac178c95fe73498b5f992e6b668",
     importpath = "github.com/labstack/echo",
 )
 
@@ -41,9 +54,9 @@ go_repository(
 )
 
 go_repository(
-    name = "com_github_spf13_cobra",
-    commit = "1be1d2841c773c01bee8289f55f7463b6e2c2539",
-    importpath = "github.com/spf13/cobra",
+    name = "com_github_pkg_errors",
+    commit = "e881fd58d78e04cf6d0de1217f8707c8cc2249bc",
+    importpath = "github.com/pkg/errors",
 )
 
 go_repository(
@@ -53,27 +66,9 @@ go_repository(
 )
 
 go_repository(
-    name = "org_golang_x_crypto",
-    commit = "365904b0f3154c6e11a9cf541c9803d1dca0445a",
-    importpath = "golang.org/x/crypto",
-)
-
-go_repository(
     name = "com_github_labstack_gommon",
     commit = "57409ada9da0f2afad6664c49502f8c50fbd8476",
     importpath = "github.com/labstack/gommon",
-)
-
-go_repository(
-    name = "com_github_influxdata_influxdb",
-    commit = "c59c4b231ecb38a78508b0167bf8f7151c4c418e",
-    importpath = "github.com/influxdata/influxdb",
-)
-
-go_repository(
-    name = "com_github_dgrijalva_jwt_go",
-    commit = "dbeaa9332f19a944acb5736b4456cfcc02140e29",
-    importpath = "github.com/dgrijalva/jwt-go",
 )
 
 go_repository(
@@ -83,9 +78,15 @@ go_repository(
 )
 
 go_repository(
-    name = "com_github_dghubble_sling",
-    commit = "80ec33c6152a53edb5545864ca37567b506c4ca5",
-    importpath = "github.com/dghubble/sling",
+    name = "com_github_dgrijalva_jwt_go",
+    commit = "dbeaa9332f19a944acb5736b4456cfcc02140e29",
+    importpath = "github.com/dgrijalva/jwt-go",
+)
+
+go_repository(
+    name = "org_golang_x_crypto",
+    commit = "13931e22f9e72ea58bb73048bc752b48c6d4d4ac",
+    importpath = "golang.org/x/crypto",
 )
 
 go_repository(
@@ -95,27 +96,21 @@ go_repository(
 )
 
 go_repository(
-    name = "com_github_mattn_go_isatty",
-    commit = "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c",
-    importpath = "github.com/mattn/go-isatty",
+    name = "com_github_dghubble_sling",
+    commit = "80ec33c6152a53edb5545864ca37567b506c4ca5",
+    importpath = "github.com/dghubble/sling",
 )
 
 go_repository(
     name = "com_github_mattn_go_colorable",
-    commit = "6fcc0c1fd9b620311d821b106a400b35dc95c497",
+    commit = "586e6dcca296d085100876beb6dbf02287a247f7",
     importpath = "github.com/mattn/go-colorable",
 )
 
 go_repository(
-    name = "com_github_valyala_bytebufferpool",
-    commit = "e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7",
-    importpath = "github.com/valyala/bytebufferpool",
-)
-
-go_repository(
-    name = "com_github_ancientlore_go_avltree",
-    commit = "4ba4b949e04ae520ba87de82bb82d8f3a6be7e11",
-    importpath = "github.com/ancientlore/go-avltree",
+    name = "com_github_mattn_go_isatty",
+    commit = "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c",
+    importpath = "github.com/mattn/go-isatty",
 )
 
 go_repository(
@@ -130,22 +125,14 @@ go_repository(
     importpath = "github.com/google/go-querystring",
 )
 
-# You *must* import the Go rules before setting up the go_image rules.
-git_repository(
-    name = "io_bazel_rules_docker",
-    remote = "https://github.com/bazelbuild/rules_docker.git",
-    tag = "v0.3.0",
+go_repository(
+    name = "com_github_ancientlore_go_avltree",
+    commit = "4ba4b949e04ae520ba87de82bb82d8f3a6be7e11",
+    importpath = "github.com/ancientlore/go-avltree",
 )
 
-load(
-    "@io_bazel_rules_docker//container:container.bzl",
-    "container_pull",
-    container_repositories = "repositories",
+go_repository(
+    name = "com_github_influxdata_influxdb",
+    commit = "2169ad680e170bfbe0d732467523a50776d27f71",
+    importpath = "github.com/influxdata/influxdb",
 )
-
-load(
-    "@io_bazel_rules_docker//go:image.bzl",
-    _go_image_repos = "repositories",
-)
-
-_go_image_repos()

@@ -9,7 +9,7 @@ PKG_SRC := $(IMPORT_PATH)/cmd/orangeapi
 # Space separated patterns of packages to skip in list, test, format.
 IGNORED_PACKAGES := /vendor/
 
-.PHONY: all clean deps build 
+.PHONY: all clean deps build
 
 BINARYDIR := bin
 BINARY := orangeapi
@@ -41,7 +41,7 @@ build:
 clean:
 	@rm -fr $(BINARYDIR)
 
-deps: 
+deps:
 	@echo "$(OK_COLOR)==> Installing dependencies$(NO_COLOR)"
 	@go get -u github.com/Masterminds/glide
 	@go get -u github.com/pierrre/gotestcover
@@ -56,6 +56,6 @@ test:
 cover: test
 	@go tool cover -html=coverage.txt
 
-bazel: deps
+bazel:
 	@bazel run //:gazelle
 	@bazel build //cmd/orangeapi

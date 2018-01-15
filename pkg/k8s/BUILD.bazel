@@ -16,6 +16,6 @@ go_test(
         "k8s_test.go",
         "kubernetes_test.go",
     ],
+    embed = [":go_default_library"],
     importpath = "github.com/orangesys/orangeapi/pkg/k8s",
-    library = ":go_default_library",
 )
