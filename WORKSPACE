@@ -7,6 +7,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_too
 go_rules_dependencies()
 go_register_toolchains()
 
+# You *must* import the Go rules before setting up the bazel_gazelle rules.
 http_archive(
     name = "bazel_gazelle",
     url = "https://github.com/bazelbuild/bazel-gazelle/releases/download/0.8/bazel-gazelle-0.8.tar.gz",
