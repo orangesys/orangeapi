@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Build binary
           command: |
-            bazel build //cmd/orangeapi
+            bazel build //cmd/orangeapi:orangeapi
       - run:
           name: Build image
           command: |
