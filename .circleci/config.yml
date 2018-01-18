@@ -11,11 +11,11 @@ jobs:
     <<: *container_config
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
-          paths:
-            - ~/.cache
+      # - restore_cache:
+      #     keys:
+      #       - v1-{{ .Branch }}
+      #     paths:
+      #       - ~/.cache
       - run:
           name: Install bazel
           command: |
