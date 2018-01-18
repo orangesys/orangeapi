@@ -1,11 +1,8 @@
 steps:
-- id: 'dep-ensure'
-  name: 'gcr.io/cloud-builders/glide'
-  env: ['PROJECT_ROOT=github.com/orangesys/orangeapi']
-  args: ['install']
-- id: 'build-tag'
+- id: 'build-image'
+  name: 'gcr.io/cloud-builders/bazel'
+  args: ['build', 'cmd/orangeapi:image']
+- id: 'container-tag'
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/orangeapi:$TAG_NAME', '.']
-- id: 'push'
-  name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'asia.gcr.io/$PROJECT_ID/orangeapi:$TAG_NAME']
+  args: ['tag', 'bazel/cmd/orangeapi:image', 'asia.gcr.io/$PROJECT_ID/orangeapi:$TAG_NAME']
+images: ['asia.gcr.io/$PROJECT_ID/orangeapi:$TAG_NAME']
