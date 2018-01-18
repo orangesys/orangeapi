@@ -33,3 +33,17 @@ go_image(
     library = ":go_default_library",
     visibility = ["//visibility:public"],
 )
+
+container_push(
+  name = "publish",
+
+  format = "Docker",
+
+  # Any of these components may have variables.
+  registry = "index.docker.io",
+  repository = "orangesys/alpine-orangeapi",
+  tag = "${VERSION}",
+
+  # Trigger stamping.
+  stamp = True,
+)
