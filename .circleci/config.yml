@@ -36,10 +36,10 @@ jobs:
           name: Build image
           command: |
             bazel build cmd/orangeapi:image
-      - save_cache:
-          key: v1-{{ .Branch }}
-          paths:
-            - ~/.cache
+      # - save_cache:
+      #     key: v1-{{ .Branch }}
+      #     paths:
+      #       - ~/.cache
 
   # deploy:
   #   docker:
