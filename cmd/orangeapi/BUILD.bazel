@@ -44,7 +44,7 @@ container_push(
   name = "publish",
 
   format = "Docker",
-
+  image = ":image",
   # Any of these components may have variables.
   registry = "index.docker.io",
   repository = "orangesys/alpine-orangeapi",
