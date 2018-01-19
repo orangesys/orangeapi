@@ -6,9 +6,7 @@ http_archive(
 load("@io_bazel_rules_go//go:def.bzl",
   "go_rules_dependencies",
   "go_register_toolchains",
-  "go_repository",
-  "go_repositories")
-go_repositories()
+  "go_repository")
 go_rules_dependencies()
 go_register_toolchains()
 
@@ -25,7 +23,7 @@ gazelle_dependencies()
 git_repository(
     name = "io_bazel_rules_docker",
     remote = "https://github.com/bazelbuild/rules_docker.git",
-    tag = "v0.3.0",
+    commit = "8aeab63328a82fdb8e8eb12f677a4e5ce6b183b1",
 )
 
 load(
