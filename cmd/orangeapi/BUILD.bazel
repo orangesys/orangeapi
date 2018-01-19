@@ -50,7 +50,7 @@ container_push(
   # Any of these components may have variables.
   registry = "asia.gcr.io",
   repository = "saas-orangesys-io/alpine-orangeapi",
-  tag = "${VERSION}",
+  tag = "{VERSION}",
 
   # Trigger stamping.
   stamp = True,
