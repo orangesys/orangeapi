@@ -8,4 +8,4 @@ steps:
   args: ['tag', 'bazel/cmd/orangeapi:image', 'asia.gcr.io/$PROJECT_ID/orangeapi']
   wait_for: ['build-image']
 
-images: ['asia.gcr.io/$PROJECT_ID/orangeapi]
+images: ['asia.gcr.io/$PROJECT_ID/orangeapi']
