@@ -5,7 +5,7 @@ steps:
 
 - id: 'container-tag'
   name: 'gcr.io/cloud-builders/docker'
-  args: ['tag', 'bazel/cmd/orangeapi:image', 'asia.gcr.io/$PROJECT_ID/orangeapi:$TAG_NAME']
+  args: ['tag', 'bazel/cmd/orangeapi:image', 'asia.gcr.io/$PROJECT_ID/orangeapi']
   wait_for: ['build-image']
 
 images: ['asia.gcr.io/$PROJECT_ID/orangeapi:$TAG_NAME']
