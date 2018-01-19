@@ -48,8 +48,8 @@ container_push(
   format = "Docker",
   image = ":image",
   # Any of these components may have variables.
-  registry = "index.docker.io",
-  repository = "orangesys/alpine-orangeapi",
+  registry = "asia.gcr.io",
+  repository = "saas-orangesys-io/alpine-orangeapi",
   tag = "${VERSION}",
 
   # Trigger stamping.
