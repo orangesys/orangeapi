@@ -1,8 +1,6 @@
 steps:
 - id: 'build-image'
   name: 'gcr.io/cloud-builders/bazel'
-  args: ['build', 'cmd/orangeapi:image']
-- id: 'container-tag'
-  name: 'gcr.io/cloud-builders/docker'
-  args: ['tag', 'bazel/cmd/orangeapi:image', 'asia.gcr.io/$PROJECT_ID/orangeapi:$TAG_NAME']
-images: ['asia.gcr.io/$PROJECT_ID/orangeapi:$TAG_NAME']
+  args: ['run', '//:push_bundle']
+  env:
+  - 'TAG_NAME=$TAG_NAME'

@@ -4,10 +4,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-if [ -z "${VERSION:-}" ]; then
-  VERSION="$(git describe --always --tags)"
-fi
+GIT_TAG=$(git describe --abbrev=0 --tags 2>/dev/null || echo $TAG_NAME)
 
 cat << EOF
-VERSION ${VERSION}
+STABLE_BUILD_GIT_TAG ${GIT_TAG-}
 EOF
