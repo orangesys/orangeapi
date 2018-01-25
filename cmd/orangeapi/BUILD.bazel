@@ -50,7 +50,7 @@ container_push(
   # Any of these components may have variables.
   registry = "index.docker.io",
   repository = "orangesys/orangeapi",
-  tag = "${STABLE_BUILD_GIT_TAG}",
+  tag = "{STABLE_BUILD_GIT_TAG}",
 
   # Trigger stamping.
   stamp = True,
