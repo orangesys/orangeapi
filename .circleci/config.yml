@@ -6,11 +6,16 @@ references:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/containers_by_bazel
 
+skip-check: &skip-check
+  name: Check for [ci skip]
+  command: bash .circleci/early_exit.sh
+
 jobs:
   build:
     <<: *container_config
     steps:
       - checkout
+      - run: *skip-check
       - run:
           name: Install bazel
           command: |

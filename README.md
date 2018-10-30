@@ -6,7 +6,7 @@
 
 # orangesys
 
-ornagesys api
+orangesys api
 
 # prerequisites
 
