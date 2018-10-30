@@ -15,7 +15,6 @@ jobs:
     <<: *container_config
     steps:
       - checkout
-      - run: *skip-check
       - run:
           name: Install bazel
           command: |
